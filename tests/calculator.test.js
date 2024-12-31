@@ -1,3 +1,4 @@
+// Description: Tests for calculator functions.
 describe('Calculator Tests', () => {
     beforeEach(() => {
         // Reset state before each test
@@ -18,6 +19,7 @@ describe('Calculator Tests', () => {
         global.updateHistory = jest.fn();
     });
 
+    // Description: Memory Operations Tests
     describe('Memory Operations', () => {
         test('memoryClear should reset memory to 0', () => {
             state.memory = 100;
@@ -32,6 +34,7 @@ describe('Calculator Tests', () => {
         });
     });
 
+    // Description: Basic Operations Tests
     describe('Basic Operations', () => {
         test('addition should work correctly', () => {
             state.currentValue = '5';
@@ -50,6 +53,7 @@ describe('Calculator Tests', () => {
         });
     });
 
+    // Description: Scientific Functions Tests
     describe('Scientific Functions', () => {
         test('sin in degree mode', () => {
             state.currentValue = '90';
@@ -65,6 +69,7 @@ describe('Calculator Tests', () => {
         });
     });
 
+    // Description: Input Handling Tests
     describe('Input Handling', () => {
         test('appendNumber should handle new numbers', () => {
             appendNumber('5');
@@ -79,6 +84,7 @@ describe('Calculator Tests', () => {
         });
     });
 
+    // Description: Clear Functions Tests
     describe('Clear Functions', () => {
         test('clearAll should reset calculator state', () => {
             state.currentValue = '123';
@@ -95,6 +101,7 @@ describe('Calculator Tests', () => {
         });
     });
 
+    // Description: Error Handling Tests
     describe('Error Handling', () => {
         test('invalid operations should display error', () => {
             calculate('invalidOperation');

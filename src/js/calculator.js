@@ -49,6 +49,7 @@ const calculate = (operation) => {
     let result;
     const current = parseFloat(state.currentValue);
 
+    // Switch case statement to handle different operations
     try {
         switch (operation) {
             case 'equals':
@@ -156,6 +157,7 @@ const throwError = (message) => {
     throw new Error(message);
 };
 
+// Update the display with the given value
 const displayError = () => {
     state.currentValue = 'Error';
     updateDisplay('Error');
