@@ -1,3 +1,4 @@
+/* Styles for screens with a maximum width of 480px */
 @media (max-width: 480px) {
     .calculator {
         padding: 15px;
@@ -20,6 +21,7 @@
     }
 }
 
+/* Styles for screens with a maximum width of 320px */
 @media (max-width: 320px) {
     .calculator {
         padding: 10px;
@@ -35,12 +37,14 @@
     }
 }
 
+/* Styles for screens with a minimum width of 768px */
 @media (min-width: 768px) {
     .calculator {
         transform: scale(1.1);
     }
 }
 
+/* Styles for screens with a maximum height of 800px */
 @media (max-height: 800px) {
     .calculator {
         transform: scale(0.9);
@@ -51,12 +55,14 @@
     }
 }
 
+/* Styles for screens with a maximum height of 700px */
 @media (max-height: 700px) {
     .calculator {
         transform: scale(0.8);
     }
 }
 
+/* Styles for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
     * {
         transition: none !important;

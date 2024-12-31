@@ -1,5 +1,5 @@
 :root {
-    /* Light theme */
+    /* Light theme variables */
     --bg-color: #f0f0f0;
     --calculator-bg: #ffffff;
     --display-bg: #e8e8e8;
@@ -16,11 +16,13 @@
 
     /* Animation variables */
     --animation-speed: 0.3s;
-    --button-pop: 0.15s;
+    --button-pop: 0.2s;
+    --calculator-bounce: cubic-bezier(0.36, 0, 0.66, -0.56);
+    --button-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 [data-theme="dark"] {
-    /* Dark theme */
+    /* Dark theme variables */
     --bg-color: #1a1a1a;
     --calculator-bg: #2d2d2d;
     --display-bg: #1f1f1f;
@@ -37,6 +39,7 @@
 }
 
 body {
+    /* Body styling */
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -51,6 +54,7 @@ body {
 }
 
 .calculator {
+    /* Calculator container styling */
     background-color: var(--calculator-bg);
     border-radius: 20px;
     padding: 20px;
@@ -58,19 +62,29 @@ body {
     width: 100%;
     max-width: 400px;
     transition: all 0.3s;
-    animation: calculatorFadeIn 0.5s ease-out;
-    transform: translateY(0);
+    animation: calculatorFloat 0.8s var(--calculator-bounce);
+    transform: translateY(0) scale(1);
+    transition: transform 0.3s var(--button-spring), box-shadow 0.3s ease;
+}
+
+.calculator:hover {
+    /* Calculator hover effect */
+    transform: translateY(-5px) scale(1.005);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 .display-container {
+    /* Display container styling */
     background-color: var(--display-bg);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 20px;
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeInScale 0.5s ease-out;
+    transform-origin: top;
 }
 
 #display {
+    /* Display input styling */
     width: 100%;
     border: none;
     background: transparent;
@@ -82,6 +96,7 @@ body {
 }
 
 #history {
+    /* History display styling */
     color: var(--text-color);
     opacity: 0.7;
     text-align: right;
@@ -90,61 +105,84 @@ body {
 }
 
 .buttons-grid {
+    /* Buttons grid layout */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
 
 button {
+    /* Button styling */
     border: none;
     border-radius: 10px;
     padding: 15px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s var(--button-spring);
     background-color: var(--btn-bg);
     color: var(--btn-color);
     transform-origin: center;
 }
 
 button:hover {
+    /* Button hover effect */
     background-color: var(--btn-hover);
-    transform: translateY(-2px);
-    animation: buttonPop var(--button-pop) ease-out;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    animation: none;
 }
 
 button:active {
-    transform: scale(0.95);
+    /* Button active effect */
+    transform: scale(0.95) translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button span {
+    /* Button span styling */
+    display: inline-block;
+    transition: transform 0.2s var(--button-spring);
+}
+
+button:hover span {
+    /* Button span hover effect */
+    transform: scale(1.1);
 }
 
 .operator {
+    /* Operator button styling */
     background-color: var(--operator-bg);
     color: var(--operator-color);
 }
 
 .equals {
+    /* Equals button styling */
     background-color: var(--equals-bg);
     color: var(--equals-color);
     grid-column: span 2;
 }
 
 .memory, .scientific {
+    /* Memory and scientific button styling */
     background-color: var(--scientific-bg);
     font-size: 0.9em;
 }
 
 .zero {
+    /* Zero button styling */
     grid-column: span 2;
 }
 
 .theme-switch {
+    /* Theme switch styling */
     position: fixed;
     top: 20px;
     right: 20px;
-    animation: fadeIn 0.5s ease-out;
+    animation: fadeInRotate 0.6s ease-out;
 }
 
 .theme-label {
+    /* Theme label styling */
     cursor: pointer;
     padding: 10px;
     border-radius: 20px;
@@ -155,19 +193,32 @@ button:active {
 }
 
 #theme-toggle {
+    /* Theme toggle input styling */
     display: none;
 }
 
 .credits {
-    margin-top: 20px;
-    color: var(--text-color);
-    opacity: 0.7;
+    /* Credits styling */
     position: fixed;
     bottom: 20px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    animation: fadeIn 0.5s ease-out 0.5s backwards;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--calculator-bg);
+    color: var(--text-color);
+    padding: 8px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: creditsSlideUp 0.5s ease-out 0.8s forwards;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    transition: all 0.3s var(--button-spring);
+}
+
+.credits:hover {
+    /* Credits hover effect */
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Animations */
@@ -195,10 +246,61 @@ button:active {
     0% {
         transform: scale(1);
     }
-    50% {
-        transform: scale(0.95);
+    40% {
+        transform: scale(0.95) translateY(2px);
+    }
+    80% {
+        transform: scale(1.05) translateY(-2px);
     }
     100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes calculatorFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-15px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes creditsSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
         transform: scale(1);
+    }
+}
+
+@keyframes fadeInRotate {
+    from {
+        opacity: 0;
+        transform: rotate(-180deg);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0);
     }
 }
