@@ -2,6 +2,8 @@
     .calculator {
         padding: 15px;
         margin: 10px;
+        max-height: 90vh;
+        overflow-y: auto;
     }
 
     button {
@@ -36,6 +38,22 @@
 @media (min-width: 768px) {
     .calculator {
         transform: scale(1.1);
+    }
+}
+
+@media (max-height: 800px) {
+    .calculator {
+        transform: scale(0.9);
+    }
+    
+    .credits {
+        bottom: 10px;
+    }
+}
+
+@media (max-height: 700px) {
+    .calculator {
+        transform: scale(0.8);
     }
 }
 

@@ -13,6 +13,10 @@
     --memory-bg: #e8e8e8;
     --scientific-bg: #f0f0f0;
     --text-color: #333333;
+
+    /* Animation variables */
+    --animation-speed: 0.3s;
+    --button-pop: 0.15s;
 }
 
 [data-theme="dark"] {
@@ -34,14 +38,16 @@
 
 body {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    min-height: 100vh;
     background-color: var(--bg-color);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    transition: background-color 0.3s;
+    transition: background-color var(--animation-speed);
+    position: relative;
 }
 
 .calculator {
@@ -52,6 +58,8 @@ body {
     width: 100%;
     max-width: 400px;
     transition: all 0.3s;
+    animation: calculatorFadeIn 0.5s ease-out;
+    transform: translateY(0);
 }
 
 .display-container {
@@ -59,6 +67,7 @@ body {
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 20px;
+    animation: fadeIn 0.3s ease-out;
 }
 
 #display {
@@ -69,6 +78,7 @@ body {
     font-size: 2em;
     text-align: right;
     outline: none;
+    transition: all var(--animation-speed);
 }
 
 #history {
@@ -94,11 +104,17 @@ button {
     transition: all 0.2s;
     background-color: var(--btn-bg);
     color: var(--btn-color);
+    transform-origin: center;
 }
 
 button:hover {
     background-color: var(--btn-hover);
     transform: translateY(-2px);
+    animation: buttonPop var(--button-pop) ease-out;
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 .operator {
@@ -122,9 +138,10 @@ button:hover {
 }
 
 .theme-switch {
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
+    animation: fadeIn 0.5s ease-out;
 }
 
 .theme-label {
@@ -145,4 +162,43 @@ button:hover {
     margin-top: 20px;
     color: var(--text-color);
     opacity: 0.7;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out 0.5s backwards;
+}
+
+/* Animations */
+@keyframes calculatorFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.7;
+    }
+}
+
+@keyframes buttonPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
