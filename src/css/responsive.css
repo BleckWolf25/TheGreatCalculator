@@ -1,0 +1,46 @@
+@media (max-width: 480px) {
+    .calculator {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 1em;
+    }
+
+    .buttons-grid {
+        gap: 8px;
+    }
+
+    #display {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 320px) {
+    .calculator {
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .buttons-grid {
+        gap: 5px;
+    }
+}
+
+@media (min-width: 768px) {
+    .calculator {
+        transform: scale(1.1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

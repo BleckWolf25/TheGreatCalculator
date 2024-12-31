@@ -1,0 +1,148 @@
+:root {
+    /* Light theme */
+    --bg-color: #f0f0f0;
+    --calculator-bg: #ffffff;
+    --display-bg: #e8e8e8;
+    --btn-bg: #ffffff;
+    --btn-color: #333333;
+    --btn-hover: #e0e0e0;
+    --operator-bg: #f8f8f8;
+    --operator-color: #ff9500;
+    --equals-bg: #ff9500;
+    --equals-color: #ffffff;
+    --memory-bg: #e8e8e8;
+    --scientific-bg: #f0f0f0;
+    --text-color: #333333;
+}
+
+[data-theme="dark"] {
+    /* Dark theme */
+    --bg-color: #1a1a1a;
+    --calculator-bg: #2d2d2d;
+    --display-bg: #1f1f1f;
+    --btn-bg: #3d3d3d;
+    --btn-color: #ffffff;
+    --btn-hover: #4d4d4d;
+    --operator-bg: #ff9500;
+    --operator-color: #ffffff;
+    --equals-bg: #ff9500;
+    --equals-color: #ffffff;
+    --memory-bg: #2a2a2a;
+    --scientific-bg: #323232;
+    --text-color: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s;
+}
+
+.calculator {
+    background-color: var(--calculator-bg);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s;
+}
+
+.display-container {
+    background-color: var(--display-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#display {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 2em;
+    text-align: right;
+    outline: none;
+}
+
+#history {
+    color: var(--text-color);
+    opacity: 0.7;
+    text-align: right;
+    min-height: 20px;
+    margin-bottom: 5px;
+}
+
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+}
+
+button:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-2px);
+}
+
+.operator {
+    background-color: var(--operator-bg);
+    color: var(--operator-color);
+}
+
+.equals {
+    background-color: var(--equals-bg);
+    color: var(--equals-color);
+    grid-column: span 2;
+}
+
+.memory, .scientific {
+    background-color: var(--scientific-bg);
+    font-size: 0.9em;
+}
+
+.zero {
+    grid-column: span 2;
+}
+
+.theme-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-label {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: var(--calculator-bg);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#theme-toggle {
+    display: none;
+}
+
+.credits {
+    margin-top: 20px;
+    color: var(--text-color);
+    opacity: 0.7;
+}

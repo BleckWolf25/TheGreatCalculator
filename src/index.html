@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scientific Calculator</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="theme-switch">
+        <input type="checkbox" id="theme-toggle">
+        <label for="theme-toggle" class="theme-label">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+        </label>
+    </div>
+    
+    <div class="calculator">
+        <div class="display-container">
+            <div id="history"></div>
+            <input type="text" id="display" disabled>
+        </div>
+        
+        <div class="buttons-grid">
+            <!-- Memory Functions -->
+            <button class="memory" onclick="memoryClear()">MC</button>
+            <button class="memory" onclick="memoryRecall()">MR</button>
+            <button class="memory" onclick="memoryAdd()">M+</button>
+            <button class="memory" onclick="memorySubtract()">M-</button>
+            <button class="memory" onclick="memoryStore()">MS</button>
+            
+            <!-- Scientific Functions -->
+            <button class="scientific" onclick="calculate('sin')">sin</button>
+            <button class="scientific" onclick="calculate('cos')">cos</button>
+            <button class="scientific" onclick="calculate('tan')">tan</button>
+            <button class="scientific" onclick="calculate('log')">log</button>
+            <button class="scientific" onclick="calculate('ln')">ln</button>
+            <button class="scientific" onclick="calculate('sqrt')">√</button>
+            <button class="scientific" onclick="calculate('pow')">x²</button>
+            <button class="scientific" onclick="calculate('exp')">EXP</button>
+            <button class="scientific" onclick="calculate('factorial')">n!</button>
+            <button class="scientific" onclick="toggleDegRad()">DEG</button>
+            
+            <!-- Clear and Delete -->
+            <button class="clear" onclick="clearAll()">C</button>
+            <button class="clear" onclick="clearEntry()">CE</button>
+            <button class="clear" onclick="backspace()">⌫</button>
+            <button class="operator" onclick="setOperator('/')">/</button>
+            
+            <!-- Numbers and Operators -->
+            <button class="number" onclick="appendNumber('7')">7</button>
+            <button class="number" onclick="appendNumber('8')">8</button>
+            <button class="number" onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="setOperator('*')">×</button>
+            
+            <button class="number" onclick="appendNumber('4')">4</button>
+            <button class="number" onclick="appendNumber('5')">5</button>
+            <button class="number" onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="setOperator('-')">-</button>
+            
+            <button class="number" onclick="appendNumber('1')">1</button>
+            <button class="number" onclick="appendNumber('2')">2</button>
+            <button class="number" onclick="appendNumber('3')">3</button>
+            <button class="operator" onclick="setOperator('+')">+</button>
+            
+            <button class="number zero" onclick="appendNumber('0')">0</button>
+            <button class="number" onclick="appendDecimal()">.</button>
+            <button class="equals" onclick="calculate('equals')">=</button>
+            
+            <!-- Constants -->
+            <button class="constant" onclick="appendNumber(Math.PI)">π</button>
+            <button class="constant" onclick="appendNumber(Math.E)">e</button>
+        </div>
+    </div>
+    <div class="credits">Created by Bleckwolf25 2025</div>
+    <script src="js/calculator.js"></script>
+    <script src="js/display.js"></script>
+</body>
+</html>
