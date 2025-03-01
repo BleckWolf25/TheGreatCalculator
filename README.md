@@ -15,7 +15,7 @@ A modern, feature-rich calculator web application with scientific functions and 
 
 ## Live Demo
 
-Visit [The Great Calculator](https://JotaRYT.github.io/TheGreatCalculator) to try it out!
+Visit [The Great Calculator](https://bleckwolf25.github.io/TheGreatCalculator) to try it out!
 
 ## Technologies Used
 
@@ -29,7 +29,7 @@ Visit [The Great Calculator](https://JotaRYT.github.io/TheGreatCalculator) to tr
 1. Clone the repository:
 
     ```bash
-   git clone https://github.com/JotaRYT/TheGreatCalculator.git
+   git clone https://github.com/BleckWolf25/TheGreatCalculator.git
     ```
 
 2. Open `index.html` in your browser
