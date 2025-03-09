@@ -1,70 +1,244 @@
-/* Styles for screens with a maximum width of 480px */
-@media (max-width: 480px) {
+/* ======================== */
+/* Responsive Design System */
+/* ======================== */
+
+/* 1. Small Mobile (Portrait) */
+@media (max-width: 360px) and (orientation: portrait) {
     .calculator {
-        padding: 15px;
-        margin: 10px;
-        max-height: 90vh;
-        overflow-y: auto;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 15px;
+        max-height: 95vh;
     }
 
     button {
+        padding: 12px 8px;
+        font-size: 0.85em;
+        min-height: 50px;
+    }
+
+    .buttons-grid {
+        gap: 6px;
+    }
+
+    #display {
+        font-size: 1.4em;
+        padding: 8px 0;
+    }
+
+    .credits {
+        font-size: 0.8em;
+        padding: 6px 15px;
+    }
+}
+
+/* 2. Medium Mobile (Portrait) */
+@media (min-width: 361px) and (max-width: 480px) {
+    .calculator {
         padding: 12px;
-        font-size: 1em;
+        margin: 8px;
+    }
+
+    button {
+        padding: 14px 10px;
+        font-size: 0.9em;
+        min-height: 55px;
+    }
+
+    #display {
+        font-size: 1.6em;
+    }
+}
+
+/* 3. Mobile Landscape & Small Tablets */
+@media (max-width: 900px) and (orientation: landscape) {
+    .calculator {
+        max-width: 90vw;
+        padding: 10px;
+        transform: scale(0.95);
+        margin: 5px 0;
+    }
+
+    button {
+        padding: 10px 8px;
+        font-size: 0.9em;
+        min-height: 45px;
+    }
+
+    .buttons-grid {
+        gap: 6px;
+    }
+
+    #display {
+        font-size: 1.4em;
+    }
+
+    .credits {
+        bottom: 5px;
+        padding: 5px 12px;
+    }
+}
+
+/* 4. Tablets (Portrait) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .calculator {
+        max-width: 500px;
+        transform: scale(1.05);
+        margin: 20px;
+    }
+
+    button {
+        padding: 18px;
+        font-size: 1.2em;
+        min-height: 65px;
+    }
+
+    #display {
+        font-size: 2.2em;
+    }
+}
+
+/* 5. Tablets (Landscape) and Small Laptops */
+@media (min-width: 1024px) and (max-width: 1366px) {
+    .calculator {
+        max-width: 500px;
+        transform: scale(1.1);
+    }
+
+    button {
+        padding: 20px;
+        font-size: 1.3em;
+    }
+
+    #display {
+        font-size: 2.5em;
+    }
+}
+
+/* 6. Desktop/Laptop Screens */
+@media (min-width: 1367px) {
+    .calculator {
+        max-width: 450px;
+        transform: scale(1.15);
+    }
+
+    button {
+        padding: 22px;
+        font-size: 1.4em;
+    }
+
+    #display {
+        font-size: 2.8em;
+    }
+}
+
+/* 7. Tall Screens (Height Adjustments) */
+@media (min-height: 1000px) {
+    .calculator {
+        transform: scale(1.2);
+        margin: 40px 0;
+    }
+}
+
+/* 8. Short Screens (Height Adjustments) */
+@media (max-height: 600px) {
+    .calculator {
+        transform: scale(0.85);
+        margin: 5px 0;
+    }
+
+    .credits {
+        display: none;
+    }
+}
+
+/* 9. Foldable Devices */
+@media (screen-spanning: fold) {
+    .calculator {
+        max-width: env(fold-left, 300px);
+        margin: env(fold-top, 10px) env(fold-right, 10px);
+    }
+}
+
+/* 10. Ultra HD/4K Screens */
+@media (min-width: 2000px) {
+    .calculator {
+        max-width: 600px;
+        transform: scale(1.4);
+        padding: 30px;
+    }
+
+    button {
+        padding: 25px;
+        font-size: 1.6em;
+    }
+
+    #display {
+        font-size: 3.2em;
+    }
+}
+
+/* 11. Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    button {
+        transform: none !important;
+    }
+}
+
+/* 12. Touch Device Optimization */
+@media (pointer: coarse) {
+    button {
+        min-width: 48px;
+        min-height: 48px;
+        touch-action: manipulation;
     }
 
     .buttons-grid {
         gap: 8px;
     }
-
-    #display {
-        font-size: 1.5em;
-    }
 }
 
-/* Styles for screens with a maximum width of 320px */
-@media (max-width: 320px) {
-    .calculator {
-        padding: 10px;
+/* 13. High Contrast Mode */
+@media (prefers-contrast: more) {
+    :root {
+        --btn-color: black;
+        --text-color: black;
+        --operator-color: #0044cc;
     }
 
     button {
-        padding: 10px;
-        font-size: 0.9em;
-    }
-
-    .buttons-grid {
-        gap: 5px;
+        border: 2px solid currentColor;
     }
 }
 
-/* Styles for screens with a minimum width of 768px */
-@media (min-width: 768px) {
+/* 14. Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+    [data-theme="auto"] {
+        --bg-color: #1a1a1a;
+        --calculator-bg: #2d2d2d;
+        --text-color: #ffffff;
+    }
+}
+
+/* 15. Print Styles */
+@media print {
     .calculator {
-        transform: scale(1.1);
+        box-shadow: none;
+        border: 2px solid #000;
+        background: white !important;
+        color: black !important;
     }
-}
 
-/* Styles for screens with a maximum height of 800px */
-@media (max-height: 800px) {
-    .calculator {
-        transform: scale(0.9);
+    button {
+        display: none;
     }
-    
-    .credits {
-        bottom: 10px;
-    }
-}
 
-/* Styles for screens with a maximum height of 700px */
-@media (max-height: 700px) {
-    .calculator {
-        transform: scale(0.8);
-    }
-}
-
-/* Styles for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        transition: none !important;
+    #display {
+        font-size: 24pt;
     }
 }
