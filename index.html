@@ -2,81 +2,201 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2d2d2d">
     <title>Scientific Calculator</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="../public/css/main.css">
+    <link rel="stylesheet" href="../public/css/responsive.css">
+    <link rel="stylesheet" href="../public/css/calculator.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
     <div class="theme-switch">
-        <input type="checkbox" id="theme-toggle">
+        <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
         <label for="theme-toggle" class="theme-label">
             <span class="sun">☀️</span>
             <span class="moon">🌙</span>
+            <span class="ripple"></span>
         </label>
     </div>
     
     <div class="calculator">
         <div class="display-container">
-            <div id="history"></div>
-            <input type="text" id="display" disabled>
+            <div id="history" role="status" aria-live="polite"></div>
+            <input type="text" id="display" disabled aria-label="Calculator display" aria-describedby="history">
         </div>
         
         <div class="buttons-grid">
             <!-- Memory Functions -->
-            <button class="memory" onclick="memoryClear()"><span>MC</span></button>
-            <button class="memory" onclick="memoryRecall()"><span>MR</span></button>
-            <button class="memory" onclick="memoryAdd()"><span>M+</span></button>
-            <button class="memory" onclick="memorySubtract()"><span>M-</span></button>
-            <button class="memory" onclick="memoryStore()"><span>MS</span></button>
+            <button class="memory" type="button" onclick="memoryClear()" aria-label="Memory Clear">
+                <span>MC</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="memory" type="button" onclick="memoryRecall()" aria-label="Memory Recall">
+                <span>MR</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="memory" type="button" onclick="memoryAdd()" aria-label="Memory Add">
+                <span>M+</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="memory" type="button" onclick="memorySubtract()" aria-label="Memory Subtract">
+                <span>M-</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="memory" type="button" onclick="memoryStore()" aria-label="Memory Store">
+                <span>MS</span>
+                <span class="ripple"></span>
+            </button>
             
             <!-- Scientific Functions -->
-            <button class="scientific" onclick="calculate('sin')"><span>sin</span></button>
-            <button class="scientific" onclick="calculate('cos')"><span>cos</span></button>
-            <button class="scientific" onclick="calculate('tan')"><span>tan</span></button>
-            <button class="scientific" onclick="calculate('log')"><span>log</span></button>
-            <button class="scientific" onclick="calculate('ln')"><span>ln</span></button>
-            <button class="scientific" onclick="calculate('sqrt')"><span>√</span></button>
-            <button class="scientific" onclick="calculate('pow')"><span>x²</span></button>
-            <button class="scientific" onclick="calculate('exp')"><span>EXP</span></button>
-            <button class="scientific" onclick="calculate('factorial')"><span>n!</span></button>
-            <button class="scientific" onclick="toggleDegRad()"><span>DEG</span></button>
+            <button class="scientific" type="button" onclick="calculate('sin')" aria-label="Sine">
+                <span>sin</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('cos')" aria-label="Cosine">
+                <span>cos</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('tan')" aria-label="Tangent">
+                <span>tan</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('log')" aria-label="Logarithm">
+                <span>log</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('ln')" aria-label="Natural Logarithm">
+                <span>ln</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('sqrt')" aria-label="Square Root">
+                <span>√</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('pow')" aria-label="Power">
+                <span>x²</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('exp')" aria-label="Exponential">
+                <span>EXP</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="calculate('factorial')" aria-label="Factorial">
+                <span>n!</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="toggleDegRad()" aria-label="Toggle Degree/Radian">
+                <span>DEG</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="scientific" type="button" onclick="showKeyboardShortcuts()" aria-label="Keyboard shortcuts">
+                <span>⌨️</span>
+                <span class="ripple"></span>
+            </button>
             
             <!-- Clear and Delete -->
-            <button class="clear" onclick="clearAll()"><span>C</span></button>
-            <button class="clear" onclick="clearEntry()"><span>CE</span></button>
-            <button class="clear" onclick="backspace()"><span>⌫</span></button>
-            <button class="operator" onclick="setOperator('/')"><span>/</span></button>
+            <button class="clear" type="button" onclick="clearAll()" aria-label="Clear All">
+                <span>C</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="clear" type="button" onclick="clearEntry()" aria-label="Clear Entry">
+                <span>CE</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="clear" type="button" onclick="backspace()" aria-label="Backspace">
+                <span>⌫</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="operator" type="button" onclick="setOperator('/')" aria-label="Divide">
+                <span>/</span>
+                <span class="ripple"></span>
+            </button>
             
             <!-- Numbers and Operators -->
-            <button class="number" onclick="appendNumber('7')"><span>7</span></button>
-            <button class="number" onclick="appendNumber('8')"><span>8</span></button>
-            <button class="number" onclick="appendNumber('9')"><span>9</span></button>
-            <button class="operator" onclick="setOperator('*')"><span>×</span></button>
+            <button class="number" type="button" onclick="appendNumber('7')" aria-label="7">
+                <span>7</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendNumber('8')" aria-label="8">
+                <span>8</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendNumber('9')" aria-label="9">
+                <span>9</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="operator" type="button" onclick="setOperator('*')" aria-label="Multiply">
+                <span>×</span>
+                <span class="ripple"></span>
+            </button>
             
-            <button class="number" onclick="appendNumber('4')"><span>4</span></button>
-            <button class="number" onclick="appendNumber('5')"><span>5</span></button>
-            <button class="number" onclick="appendNumber('6')"><span>6</span></button>
-            <button class="operator" onclick="setOperator('-')"><span>-</span></button>
+            <button class="number" type="button" onclick="appendNumber('4')" aria-label="4">
+                <span>4</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendNumber('5')" aria-label="5">
+                <span>5</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendNumber('6')" aria-label="6">
+                <span>6</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="operator" type="button" onclick="setOperator('-')" aria-label="Subtract">
+                <span>-</span>
+                <span class="ripple"></span>
+            </button>
             
-            <button class="number" onclick="appendNumber('1')"><span>1</span></button>
-            <button class="number" onclick="appendNumber('2')"><span>2</span></button>
-            <button class="number" onclick="appendNumber('3')"><span>3</span></button>
-            <button class="operator" onclick="setOperator('+')"><span>+</span></button>
+            <button class="number" type="button" onclick="appendNumber('1')" aria-label="1">
+                <span>1</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendNumber('2')" aria-label="2">
+                <span>2</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendNumber('3')" aria-label="3">
+                <span>3</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="operator" type="button" onclick="setOperator('+')" aria-label="Add">
+                <span>+</span>
+                <span class="ripple"></span>
+            </button>
             
-            <button class="number zero" onclick="appendNumber('0')"><span>0</span></button>
-            <button class="number" onclick="appendDecimal()"><span>.</span></button>
-            <button class="equals" onclick="calculate('equals')"><span>=</span></button>
+            <button class="number zero" type="button" onclick="appendNumber('0')" aria-label="0">
+                <span>0</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="number" type="button" onclick="appendDecimal()" aria-label="Decimal Point">
+                <span>.</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="equals" type="button" onclick="calculate('equals')" aria-label="Equals">
+                <span>=</span>
+                <span class="ripple"></span>
+            </button>
             
             <!-- Constants -->
-            <button class="constant" onclick="appendNumber(Math.PI)"><span>π</span></button>
-            <button class="constant" onclick="appendNumber(Math.E)"><span>e</span></button>
+            <button class="constant" type="button" onclick="appendNumber(Math.PI)" aria-label="Pi">
+                <span>π</span>
+                <span class="ripple"></span>
+            </button>
+            <button class="constant" type="button" onclick="appendNumber(Math.E)" aria-label="Euler's Number">
+                <span>e</span>
+                <span class="ripple"></span>
+            </button>
         </div>
     </div>
     <div class="credits">
         <span>© 2025</span> Created with 💻 by <strong>Bleckwolf25</strong>
     </div>
-    <script src="js/calculator.js"></script>
-    <script src="js/display.js"></script>
+    <div class="loading-overlay" aria-hidden="true">
+        <div class="loading-spinner"></div>
+    </div>
+    <script src="../public/js/calculator.js"></script>
+    <script src="../public/js/display.js"></script>
 </body>
 </html>
