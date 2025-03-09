@@ -1,4 +1,4 @@
-# The Great Calculator
+# The Great Calculators
 
 A modern, feature-rich calculator web application with scientific functions and a responsive design.
 
