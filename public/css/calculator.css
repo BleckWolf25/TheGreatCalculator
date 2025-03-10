@@ -1,0 +1,312 @@
+/* ======================== */
+/* Calculator Styles        */
+/* ======================== */
+
+/* Import main.css */
+@import './main.css';
+
+.calculator {
+    background-color: var(--calculator-bg);
+    border-radius: var(--apple-radius);
+    padding: 24px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: calculatorFloat 0.6s var(--calculator-bounce);
+    transform: translateY(0) scale(1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    border: 0.5px solid var(--border-color);
+    -webkit-backdrop-filter: blur(var(--apple-blur));
+    backdrop-filter: blur(var(--apple-blur));
+}
+
+.calculator:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.display-container {
+    background-color: var(--display-bg);
+    border-radius: var(--button-radius);
+    padding: 20px;
+    margin-bottom: 24px;
+    animation: fadeInScale 0.5s ease-out;
+    transform-origin: top;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid var(--border-color);
+}
+
+#display {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 2.2em;
+    text-align: right;
+    outline: none;
+    transition: all var(--animation-speed);
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+}
+
+#display.scientific-notation {
+    font-size: 1.8em;
+}
+
+#history {
+    color: var(--text-color);
+    opacity: 0.6;
+    text-align: right;
+    min-height: 20px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    font-weight: 300;
+    transition: opacity 0.3s ease;
+}
+
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Button styles - Apple style */
+button {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-radius: var(--button-radius);
+    padding: 16px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s var(--button-spring);
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    transform-origin: center;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 1px 2px var(--button-shadow);
+    border: 0.5px solid var(--border-color);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--button-shadow);
+}
+
+button:active {
+    transform: scale(0.96);
+    box-shadow: 0 1px 1px var(--button-shadow);
+    filter: brightness(0.98);
+}
+
+/* Button variants */
+.operator {
+    background-color: var(--operator-bg);
+    color: var(--operator-color);
+    font-weight: 600;
+}
+
+.equals {
+    background-color: var(--equals-bg);
+    color: var(--equals-color);
+    grid-column: span 2;
+    font-weight: 600;
+}
+
+.memory, .scientific {
+    background-color: var(--scientific-bg);
+    font-size: 0.9em;
+    color: var(--operator-color);
+    font-weight: 500;
+}
+
+.clear {
+    font-weight: 500;
+}
+
+.zero {
+    grid-column: span 2;
+}
+
+.number {
+    font-weight: 400;
+}
+
+/* Ripple effect */
+.ripple {
+    position: absolute;
+    background: var(--ripple-color);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: rippleEffect var(--ripple-duration) linear;
+    opacity: 0;
+}
+
+/* Theme switch */
+.theme-switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    animation: fadeInRotate 0.6s ease-out;
+    z-index: 10;
+}
+
+.theme-label {
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 25px;
+    background-color: var(--calculator-bg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(var(--apple-blur));
+    backdrop-filter: blur(var(--apple-blur));
+    box-shadow: 0 4px 12px var(--shadow-color);
+    border: 0.5px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.theme-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+#theme-toggle {
+    display: none;
+}
+
+.sun, .moon {
+    font-size: 1.2em;
+}
+
+/* Credits */
+.credits {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--calculator-bg);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    opacity: 0;
+    animation: creditsSlideUp 0.5s ease-out 0.8s forwards;
+    font-size: 0.9em;
+    letter-spacing: 0.2px;
+    transition: all 0.3s var(--button-spring);
+    -webkit-backdrop-filter: blur(var(--apple-blur));
+    backdrop-filter: blur(var(--apple-blur));
+    border: 0.5px solid var(--border-color);
+}
+
+.credits:hover {
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s;
+    -webkit-backdrop-filter: blur(var(--apple-blur));
+    backdrop-filter: blur(var(--apple-blur));
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--loading-spinner-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animation definitions */
+@keyframes scientificPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes rippleEffect {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.3;
+    }
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes calculatorFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes creditsSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInRotate {
+    from {
+        opacity: 0;
+        transform: rotate(-90deg);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0);
+    }
+}

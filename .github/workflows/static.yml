@@ -38,7 +38,7 @@ jobs:
       - name: Build
         run: |
           mkdir -p dist
-          cp -r src/* dist/
+          cp -r public/* dist/
           cp index.html dist/
       
       - name: Upload artifact

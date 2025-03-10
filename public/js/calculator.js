@@ -497,7 +497,7 @@ const initKeyboardSupport = () => {
     // Add keyboard support hint
     const keyboardHint = document.createElement('div');
     keyboardHint.id = 'keyboard-hint';
-    keyboardHint.innerHTML = '<kbd>?</kbd>';
+    keyboardHint.innerHTML = '';
     keyboardHint.title = 'Keyboard shortcuts available. Press ? for help.';
     document.body.appendChild(keyboardHint);
     
@@ -571,9 +571,6 @@ const showKeyboardShortcuts = () => {
                         <div class="shortcut">
                             <kbd>Ctrl</kbd> + <kbd>D</kbd> <span>Toggle DEG/RAD</span>
                         </div>
-                        <div class="shortcut">
-                            <kbd>?</kbd> <span>Show this help</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -621,6 +618,17 @@ const setupAccessibility = () => {
 
 // Initialize calculator
 const initCalculator = () => {
+    // Remove loading overlay once elements are confirmed to exist
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    if (loadingOverlay) loadingOverlay.remove();
+
+    // Check if all required DOM elements exist
+    if (!document.getElementById('display') || !document.getElementById('history')) {
+        console.error('Critical DOM elements missing. Retrying initialization...');
+        setTimeout(initCalculator, 100);
+        return;
+    }
+    
     // Set initial state
     updateDisplay('0');
     
@@ -635,11 +643,6 @@ const initCalculator = () => {
     
     // Check if we can offer additional browser-specific features
     checkBrowserFeatures();
-    
-    // Show welcome toast
-    setTimeout(() => {
-        showToast('Advanced Calculator Ready!');
-    }, 1000);
 };
 
 // Setup gesture support for touch devices
@@ -651,7 +654,7 @@ const setupGestureSupport = () => {
     calculator.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
-    });
+    }, { passive: true });
     
     calculator.addEventListener('touchend', (e) => {
         const touchEndX = e.changedTouches[0].clientX;
@@ -716,7 +719,7 @@ const checkBrowserFeatures = () => {
         shareButton.setAttribute('aria-label', 'Share calculator');
         shareButton.addEventListener('click', () => {
             navigator.share({
-                title: 'Advanced Scientific Calculator',
+                title: 'The Great Calculator',
                 text: state.lastCalculation 
                     ? `Check out my calculation: ${state.lastCalculation} = ${state.currentValue}`
                     : 'Check out this advanced scientific calculator!',
@@ -729,8 +732,13 @@ const checkBrowserFeatures = () => {
     }
 };
 
-// Call initialization when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', initCalculator);
+// Ensure DOM is fully loaded before initialization
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCalculator);
+} else {
+    // DOM already loaded, initialize immediately
+    initCalculator();
+}
 
 // Export functions for external access
 window.calculate = calculate;

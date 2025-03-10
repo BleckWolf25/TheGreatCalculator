@@ -1,7 +1,7 @@
 {
   "name": "thegreatcalculator",
-  "version": "1.0.0",
-  "description": "A modern scientific calculator.",
+  "version": "1.0.1",
+  "description": "A modern scientific calculator apple-like design.",
   "keywords": [
     "calculator",
     "website",
@@ -18,17 +18,17 @@
   "license": "MIT",
   "author": "bleckwolf25",
   "type": "commonjs",
-  "main": "index.html",
+  "main": "../public/js/calculator.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint src/js/*.js",
-    "dev": "live-server src/"
+    "lint": "eslint public/js/*.js",
+    "dev": "live-server public/"
   },
   "dependencies": {
-    "jest": "^29.7.0",
-    "live-server": "^1.2.0"
+    "eslint": "^9.22.0",
+    "jest": "^29.7.0"
   }
 }

@@ -1,0 +1,81 @@
+/* ======================== */
+/* Variables                */
+/* ======================== */
+
+:root {
+    /* Light theme variables - Apple-inspired */
+    --bg-color: #f0f0f0;
+    --calculator-bg: #ffffff;
+    --display-bg: #e8e8e8;
+    --btn-bg: #ffffff;
+    --btn-color: #333333;
+    --btn-hover: #fad5aa;
+    --operator-bg: #ff9500;
+    --operator-color: #333333;
+    --equals-bg: #ff9500;
+    --equals-color: #333333;
+    --memory-bg: #e8e8e8;
+    --scientific-bg: #f0f0f0;
+    --text-color: #333333;
+    --ripple-color: rgba(0, 0, 0, 0.05);
+    --loading-spinner-color: #06c;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --button-shadow: rgba(0, 0, 0, 0.03);
+    --border-color: rgba(0, 0, 0, 0.05);
+
+    /* Animation variables */
+    --animation-speed: 0.3s;
+    --button-pop: 0.15s;
+    --calculator-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --button-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ripple-duration: 0.5s;
+    
+    /* Apple-specific */
+    --apple-blur: 20px;
+    --apple-radius: 18px;
+    --button-radius: 14px;
+}
+
+[data-theme="dark"] {
+    /* Dark theme variables - Apple-inspired */
+    --bg-color: #1a1a1a;
+    --calculator-bg: #2d2d2d;
+    --display-bg: #1f1f1f;
+    --btn-bg: #3d3d3d;
+    --btn-color: #ffffff;
+    --btn-hover: #4d4d4d;
+    --operator-bg: #ff9500;
+    --operator-color: #ffffff;
+    --equals-bg: #ff9500;
+    --equals-color: #ffffff;
+    --memory-bg: #2a2a2a;
+    --scientific-bg: #323232;
+    --text-color: #ffffff;
+    --ripple-color: rgba(255, 255, 255, 0.2);
+    --loading-spinner-color: #ff2d78;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --button-shadow: rgba(0, 0, 0, 0.1);
+    --border-color: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: var(--bg-color);
+    background-attachment: fixed;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background-color var(--animation-speed);
+    position: relative;
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.theme-transition {
+    transition: all 0.3s ease;
+}
