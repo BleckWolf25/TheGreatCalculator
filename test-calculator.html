@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        .error { background: #ffebee; color: #c62828; }
+        .info { background: #e3f2fd; color: #1565c0; }
+        .test-buttons {
+            margin: 20px 0;
+        }
+        .test-btn {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .test-btn:hover {
+            background: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculator Functionality Test</h1>
+    <div id="test-output"></div>
+    
+    <div class="test-buttons">
+        <button class="test-btn" onclick="initializeCalculator()">Initialize Calculator</button>
+        <button class="test-btn" onclick="testBasicOperations()">Test Basic Operations</button>
+        <button class="test-btn" onclick="testGlobalFunctions()">Test Global Functions</button>
+        <button class="test-btn" onclick="testCalculatorButtons()">Test Calculator Buttons</button>
+        <button class="test-btn" onclick="clearTests()">Clear Results</button>
+    </div>
+    
+    <!-- Required DOM elements for calculator -->
+    <div style="display: none;">
+        <div id="display">0</div>
+        <div id="history"></div>
+    </div>
+    
+    <script type="module">
+        const output = document.getElementById('test-output');
+        let calculatorInitialized = false;
+        
+        function log(message, type = 'info') {
+            console.log(message);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearTests() {
+            output.innerHTML = '';
+        }
+
+        async function initializeCalculator() {
+            if (calculatorInitialized) {
+                log('⚠️ Calculator already initialized', 'info');
+                return;
+            }
+
+            log('🚀 Initializing Calculator...', 'info');
+
+            try {
+                // Import the ModuleLoader
+                log('📦 Loading ModuleLoader...', 'info');
+                const moduleLoaderModule = await import('./src/js/moduleLoader.js');
+                const { ModuleLoader, LegacyCompatibility } = moduleLoaderModule;
+                log('✅ ModuleLoader imported successfully', 'success');
+
+                // Create ModuleLoader instance
+                log('🔧 Creating ModuleLoader instance...', 'info');
+                const moduleLoader = new ModuleLoader();
+                log('✅ ModuleLoader instance created', 'success');
+
+                // Load all modules
+                log('📚 Loading all modules...', 'info');
+                const modules = await moduleLoader.loadAllModules();
+                log(`✅ Modules loaded: ${Object.keys(modules).join(', ')}`, 'success');
+
+                // Create Calculator instance
+                log('🧮 Creating Calculator instance...', 'info');
+                const calculator = new modules.Calculator(modules);
+                log('✅ Calculator instance created', 'success');
+
+                // Initialize Calculator
+                log('⚙️ Initializing Calculator...', 'info');
+                const initResult = await calculator.initialize();
+                if (initResult) {
+                    log('✅ Calculator initialized successfully', 'success');
+                } else {
+                    log('❌ Calculator initialization failed', 'error');
+                    return;
+                }
+
+                // Setup legacy compatibility
+                log('🔗 Setting up legacy compatibility...', 'info');
+                const legacyCompatibility = new LegacyCompatibility(calculator);
+                log('✅ Legacy compatibility setup complete', 'success');
+
+                // Store globally for testing
+                window.calculatorInstance = calculator;
+                window.moduleLoaderInstance = moduleLoader;
+
+                calculatorInitialized = true;
+                log('🎉 Calculator ready for testing!', 'success');
+
+            } catch (error) {
+                log(`❌ Calculator initialization failed: ${error.message}`, 'error');
+                console.error('Initialization error:', error);
+            }
+        }
+        
+        function testGlobalFunctions() {
+            log('🌐 Testing Global Functions...', 'info');
+
+            if (!calculatorInitialized) {
+                log('⚠️ Calculator not initialized. Please initialize first.', 'error');
+                return;
+            }
+
+            const globalFunctions = [
+                'appendNumber', 'setOperator', 'calculate', 'clearAll',
+                'memoryClear', 'memoryRecall', 'memoryAdd', 'memorySubtract',
+                'exportHistory', 'showHistory', 'closeHistoryModal'
+            ];
+
+            let allAvailable = true;
+            globalFunctions.forEach(func => {
+                if (typeof window[func] === 'function') {
+                    log(`✅ ${func}: Available`, 'success');
+                } else {
+                    log(`❌ ${func}: Not available`, 'error');
+                    allAvailable = false;
+                }
+            });
+
+            if (allAvailable) {
+                log('🎉 All global functions are available!', 'success');
+            } else {
+                log('⚠️ Some global functions are missing', 'error');
+            }
+        }
+        
+        function testBasicOperations() {
+            log('🧮 Testing Basic Calculator Operations...', 'info');
+
+            if (!calculatorInitialized) {
+                log('⚠️ Calculator not initialized. Please initialize first.', 'error');
+                return;
+            }
+
+            try {
+                // Test if global functions exist
+                if (typeof window.appendNumber !== 'function') {
+                    log('❌ appendNumber function not available', 'error');
+                    return;
+                }
+                
+                // Clear calculator
+                if (typeof window.clearAll === 'function') {
+                    window.clearAll();
+                    log('✅ Calculator cleared', 'success');
+                } else {
+                    log('❌ clearAll function not available', 'error');
+                    return;
+                }
+                
+                // Test number input
+                window.appendNumber('5');
+                log('✅ Appended number 5', 'success');
+                
+                // Test operator
+                if (typeof window.setOperator === 'function') {
+                    window.setOperator('+');
+                    log('✅ Set operator +', 'success');
+                } else {
+                    log('❌ setOperator function not available', 'error');
+                    return;
+                }
+                
+                // Test another number
+                window.appendNumber('3');
+                log('✅ Appended number 3', 'success');
+                
+                // Test calculation
+                if (typeof window.calculate === 'function') {
+                    window.calculate();
+                    log('✅ Performed calculation', 'success');
+                } else {
+                    log('❌ calculate function not available', 'error');
+                    return;
+                }
+                
+                // Check if calculator instance is available
+                if (window.calculatorInstance) {
+                    const currentValue = window.calculatorInstance.getCurrentValue();
+                    log(`✅ Current calculator value: ${currentValue}`, 'success');
+                    
+                    if (currentValue === '8') {
+                        log('🎉 Basic calculation test PASSED! (5 + 3 = 8)', 'success');
+                    } else {
+                        log(`⚠️ Unexpected result: expected 8, got ${currentValue}`, 'error');
+                    }
+                } else {
+                    log('⚠️ Calculator instance not available for value check', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function testCalculatorButtons() {
+            log('🔘 Testing Calculator Button Simulation...', 'info');
+
+            if (!calculatorInitialized) {
+                log('⚠️ Calculator not initialized. Please initialize first.', 'error');
+                return;
+            }
+
+            try {
+                // Simulate clicking calculator buttons
+                const testSequence = [
+                    { action: 'clear', desc: 'Clear calculator' },
+                    { action: () => window.appendNumber('2'), desc: 'Click 2' },
+                    { action: () => window.setOperator('*'), desc: 'Click ×' },
+                    { action: () => window.appendNumber('4'), desc: 'Click 4' },
+                    { action: () => window.calculate(), desc: 'Click =' }
+                ];
+                
+                testSequence.forEach((test, index) => {
+                    try {
+                        if (test.action === 'clear') {
+                            window.clearAll();
+                        } else {
+                            test.action();
+                        }
+                        log(`✅ Step ${index + 1}: ${test.desc}`, 'success');
+                    } catch (error) {
+                        log(`❌ Step ${index + 1} failed: ${test.desc} - ${error.message}`, 'error');
+                    }
+                });
+                
+                // Check result
+                if (window.calculatorInstance) {
+                    const result = window.calculatorInstance.getCurrentValue();
+                    log(`✅ Final result: ${result}`, 'success');
+                    
+                    if (result === '8') {
+                        log('🎉 Button simulation test PASSED! (2 × 4 = 8)', 'success');
+                    } else {
+                        log(`⚠️ Unexpected result: expected 8, got ${result}`, 'error');
+                    }
+                }
+                
+            } catch (error) {
+                log(`❌ Button test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Make functions globally available
+        window.initializeCalculator = initializeCalculator;
+        window.testGlobalFunctions = testGlobalFunctions;
+        window.testBasicOperations = testBasicOperations;
+        window.testCalculatorButtons = testCalculatorButtons;
+        window.clearTests = clearTests;
+
+        // Wait for page to load and then run initial test
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                log('🚀 Calculator Test Page Loaded', 'info');
+                log('Click "Initialize Calculator" first, then run other tests', 'info');
+
+                // Run initial global function test (will show functions are missing)
+                testGlobalFunctions();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

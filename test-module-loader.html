@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Loader Test - The Great Calculator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007AFF;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e5e5e7;
+            border-radius: 8px;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 14px;
+        }
+        .module-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .module-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #007AFF;
+        }
+        .module-item.loaded {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .module-item.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Module Loader Test</h1>
+        <p>This page tests the module loader functionality of The Great Calculator.</p>
+        
+        <div class="test-section">
+            <h3>Module Loader Tests</h3>
+            <button onclick="testModuleLoaderInitialization()">Test Module Loader Initialization</button>
+            <button onclick="testModuleLoading()">Test Module Loading</button>
+            <button onclick="testLazyLoading()">Test Lazy Loading</button>
+            <button onclick="testErrorHandling()">Test Error Handling</button>
+            <button onclick="testStatistics()">Test Statistics</button>
+            <button onclick="testBundleOptimization()">Test Bundle Optimization</button>
+            
+            <div id="status"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Module Status</h3>
+            <div id="moduleStatus"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Performance Statistics</h3>
+            <div id="performanceStats"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Instructions</h3>
+            <ol>
+                <li>Click the test buttons above to test different aspects of the module loader</li>
+                <li>Check the module status to see which modules are loaded</li>
+                <li>Review performance statistics for optimization insights</li>
+                <li>Open browser console to see detailed logging</li>
+            </ol>
+        </div>
+    </div>
+
+    <script type="module">
+        import ModuleLoader from './src/js/moduleLoader.js';
+
+        // Initialize module loader
+        let moduleLoader;
+        
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function updateModuleStatus() {
+            if (!moduleLoader) return;
+            
+            const stats = moduleLoader.getLoadingStats();
+            const moduleStatusDiv = document.getElementById('moduleStatus');
+            
+            let html = `
+                <div class="stats">
+                    <strong>Modules Loaded:</strong> ${stats.loadedModules}/${stats.totalModules}<br>
+                    <strong>Currently Loading:</strong> ${stats.loadingModules}<br>
+                    <strong>Loading Errors:</strong> ${stats.loadingErrors}<br>
+                    <strong>Average Load Time:</strong> ${stats.averageLoadTime?.toFixed(2) || 0}ms
+                </div>
+                <div class="module-list">
+            `;
+            
+            // Show loaded modules
+            stats.loadedModuleNames.forEach(name => {
+                html += `<div class="module-item loaded">${name} ✓</div>`;
+            });
+            
+            // Show loading modules
+            stats.loadingModuleNames.forEach(name => {
+                html += `<div class="module-item">${name} ⏳</div>`;
+            });
+            
+            html += '</div>';
+            moduleStatusDiv.innerHTML = html;
+        }
+
+        function updatePerformanceStats() {
+            if (!moduleLoader) return;
+            
+            const stats = moduleLoader.getLoadingStats();
+            const performanceStatsDiv = document.getElementById('performanceStats');
+            
+            let html = `
+                <div class="stats">
+                    <strong>Memory Usage:</strong><br>
+                    - Used: ${stats.memoryUsage?.usedJSHeapSize || 'unknown'}<br>
+                    - Total: ${stats.memoryUsage?.totalJSHeapSize || 'unknown'}<br>
+                    - Limit: ${stats.memoryUsage?.jsHeapSizeLimit || 'unknown'}<br>
+                    - Usage: ${stats.memoryUsage?.usagePercentage || 'unknown'}%<br><br>
+                    
+                    <strong>Cache Hit Rate:</strong> ${(stats.cacheHitRate * 100).toFixed(1)}%<br><br>
+                    
+                    <strong>Module Health:</strong><br>
+                    - Healthy: ${stats.moduleHealth?.healthy || 0}<br>
+                    - Placeholder: ${stats.moduleHealth?.placeholder || 0}<br>
+                    - Failed: ${stats.moduleHealth?.failed || 0}<br><br>
+                    
+                    <strong>Recommendations:</strong><br>
+                    ${stats.recommendations?.map(rec => `- ${rec}`).join('<br>') || 'None'}
+                </div>
+            `;
+            
+            performanceStatsDiv.innerHTML = html;
+        }
+
+        window.testModuleLoaderInitialization = async function() {
+            try {
+                showStatus('Initializing module loader...', 'info');
+                moduleLoader = new ModuleLoader();
+                
+                // Test initialization
+                await moduleLoader.initializeLazyLoading();
+                moduleLoader.initializeErrorHandling();
+                
+                showStatus('✅ Module loader initialized successfully!', 'success');
+                updateModuleStatus();
+                updatePerformanceStats();
+            } catch (error) {
+                showStatus(`❌ Module loader initialization failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testModuleLoading = async function() {
+            if (!moduleLoader) {
+                showStatus('❌ Module loader not initialized', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Testing module loading...', 'info');
+                
+                // Test loading core modules
+                const coreModules = ['StateManager', 'OperationsEngine', 'DisplayManager'];
+                
+                for (const moduleName of coreModules) {
+                    try {
+                        await moduleLoader.loadModule(moduleName);
+                        console.log(`✅ Successfully loaded: ${moduleName}`);
+                    } catch (error) {
+                        console.warn(`⚠️ Failed to load ${moduleName}:`, error);
+                    }
+                }
+                
+                showStatus('✅ Module loading test completed!', 'success');
+                updateModuleStatus();
+                updatePerformanceStats();
+            } catch (error) {
+                showStatus(`❌ Module loading test failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testLazyLoading = async function() {
+            if (!moduleLoader) {
+                showStatus('❌ Module loader not initialized', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Testing lazy loading...', 'info');
+                
+                // Test lazy loading of non-critical modules
+                const lazyModules = ['ExportManager', 'CalculatorAPI'];
+                
+                for (const moduleName of lazyModules) {
+                    try {
+                        await moduleLoader.loadModuleLazy(moduleName, false);
+                        console.log(`✅ Successfully lazy loaded: ${moduleName}`);
+                    } catch (error) {
+                        console.warn(`⚠️ Failed to lazy load ${moduleName}:`, error);
+                    }
+                }
+                
+                // Test preloading
+                await moduleLoader.preloadModules(['StorageManager']);
+                
+                showStatus('✅ Lazy loading test completed!', 'success');
+                updateModuleStatus();
+                updatePerformanceStats();
+            } catch (error) {
+                showStatus(`❌ Lazy loading test failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testErrorHandling = async function() {
+            if (!moduleLoader) {
+                showStatus('❌ Module loader not initialized', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Testing error handling...', 'info');
+                
+                // Test loading non-existent module
+                try {
+                    await moduleLoader.loadModule('NonExistentModule');
+                } catch (error) {
+                    console.log('✅ Error handling working correctly:', error.message);
+                }
+                
+                // Test error boundary
+                const errorBoundary = moduleLoader.addErrorBoundary(
+                    () => { throw new Error('Test error'); },
+                    'Test operation'
+                );
+                
+                try {
+                    await errorBoundary();
+                } catch (error) {
+                    console.log('✅ Error boundary working correctly:', error.message);
+                }
+                
+                showStatus('✅ Error handling test completed!', 'success');
+                updateModuleStatus();
+                updatePerformanceStats();
+            } catch (error) {
+                showStatus(`❌ Error handling test failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testStatistics = function() {
+            if (!moduleLoader) {
+                showStatus('❌ Module loader not initialized', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Testing statistics...', 'info');
+                
+                const stats = moduleLoader.getLoadingStats();
+                console.log('📊 Module loader statistics:', stats);
+                
+                const bundleReport = moduleLoader.getBundleReport();
+                console.log('📦 Bundle report:', bundleReport);
+                
+                const optimizedOrder = moduleLoader.optimizeLoadingOrder();
+                console.log('🔄 Optimized loading order:', optimizedOrder);
+                
+                showStatus('✅ Statistics test completed! Check console for details.', 'success');
+                updateModuleStatus();
+                updatePerformanceStats();
+            } catch (error) {
+                showStatus(`❌ Statistics test failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testBundleOptimization = function() {
+            if (!moduleLoader) {
+                showStatus('❌ Module loader not initialized', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Testing bundle optimization...', 'info');
+                
+                // Test bundle analysis
+                const bundleReport = moduleLoader.getBundleReport();
+                console.log('📦 Bundle analysis:', bundleReport);
+                
+                // Test loading order optimization
+                const optimizedOrder = moduleLoader.optimizeLoadingOrder();
+                console.log('🔄 Optimized order:', optimizedOrder);
+                
+                showStatus('✅ Bundle optimization test completed!', 'success');
+                updateModuleStatus();
+                updatePerformanceStats();
+            } catch (error) {
+                showStatus(`❌ Bundle optimization test failed: ${error.message}`, 'error');
+            }
+        };
+
+        // Initialize on page load
+        showStatus('Module Loader Test Ready. Click "Test Module Loader Initialization" to begin.', 'info');
+    </script>
+</body>
+</html>

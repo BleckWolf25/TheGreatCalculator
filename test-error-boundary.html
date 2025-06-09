@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Boundary Test - The Great Calculator</title>
+    <link rel="stylesheet" href="/src/css/error-boundary.css">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .test-button.danger {
+            background: #dc3545;
+        }
+        .test-button.danger:hover {
+            background: #c82333;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🛡️ Error Boundary Test Suite</h1>
+        <p>This page tests the error boundary system for The Great Calculator.</p>
+
+        <div class="test-section">
+            <h3>1. Error Boundary Initialization</h3>
+            <button class="test-button" onclick="testErrorBoundaryInit()">Test Initialization</button>
+            <div id="init-status" class="status info">Click to test error boundary initialization</div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Error Handling</h3>
+            <button class="test-button danger" onclick="testCalculationError()">Trigger Calculation Error</button>
+            <button class="test-button danger" onclick="testUIError()">Trigger UI Error</button>
+            <button class="test-button danger" onclick="testCriticalError()">Trigger Critical Error</button>
+            <div id="error-status" class="status info">Click buttons to test error handling</div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Fallback Components</h3>
+            <button class="test-button" onclick="testFallbackDisplay()">Test Fallback Display</button>
+            <button class="test-button" onclick="testFallbackButtons()">Test Fallback Buttons</button>
+            <button class="test-button" onclick="testEmergencyCalculator()">Test Emergency Calculator</button>
+            <div id="fallback-status" class="status info">Click to test fallback components</div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Recovery Mechanisms</h3>
+            <button class="test-button" onclick="testRecovery()">Test Error Recovery</button>
+            <button class="test-button" onclick="testRetry()">Test Retry Mechanism</button>
+            <div id="recovery-status" class="status info">Click to test recovery mechanisms</div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Error Statistics</h3>
+            <button class="test-button" onclick="showErrorStats()">Show Error Statistics</button>
+            <div id="stats-display" class="status info">Click to view error statistics</div>
+        </div>
+
+        <div id="test-output" style="margin-top: 30px;"></div>
+    </div>
+
+    <!-- Load Error Boundary System -->
+    <script type="module">
+        import ErrorBoundary, { ERROR_CATEGORIES, ERROR_SEVERITY } from './src/js/modules/error/errorBoundary.js';
+        import FallbackComponents from './src/js/modules/error/fallbackComponents.js';
+        import FallbackCalculator from './src/js/modules/error/fallbackCalculator.js';
+
+        // Initialize error boundary system
+        window.errorBoundary = new ErrorBoundary();
+        window.fallbackComponents = new FallbackComponents();
+        window.fallbackCalculator = new FallbackCalculator();
+        window.ERROR_CATEGORIES = ERROR_CATEGORIES;
+        window.ERROR_SEVERITY = ERROR_SEVERITY;
+
+        // Initialize
+        const initSuccess = window.errorBoundary.initialize();
+        window.fallbackCalculator.initialize();
+
+        if (initSuccess) {
+            console.log('✅ Error boundary test environment ready');
+        } else {
+            console.error('❌ Error boundary initialization failed');
+        }
+
+        // Test functions
+        window.testErrorBoundaryInit = function() {
+            const status = document.getElementById('init-status');
+            if (window.errorBoundary && window.errorBoundary.isInitialized) {
+                status.className = 'status success';
+                status.textContent = '✅ Error boundary initialized successfully';
+            } else {
+                status.className = 'status error';
+                status.textContent = '❌ Error boundary initialization failed';
+            }
+        };
+
+        window.testCalculationError = async function() {
+            const status = document.getElementById('error-status');
+            try {
+                await window.errorBoundary.wrapOperation(() => {
+                    throw new Error('Division by zero');
+                }, ERROR_CATEGORIES.CALCULATION);
+                
+                status.className = 'status error';
+                status.textContent = '❌ Error should have been caught';
+            } catch (error) {
+                status.className = 'status success';
+                status.textContent = '✅ Calculation error caught and handled';
+            }
+        };
+
+        window.testUIError = async function() {
+            const status = document.getElementById('error-status');
+            try {
+                await window.errorBoundary.wrapOperation(() => {
+                    throw new Error('Display element not found');
+                }, ERROR_CATEGORIES.UI);
+                
+                status.className = 'status error';
+                status.textContent = '❌ Error should have been caught';
+            } catch (error) {
+                status.className = 'status success';
+                status.textContent = '✅ UI error caught and handled';
+            }
+        };
+
+        window.testCriticalError = function() {
+            const status = document.getElementById('error-status');
+            window.errorBoundary.handleGlobalError({
+                message: 'Critical system failure',
+                error: new Error('Critical system failure'),
+                type: 'critical'
+            });
+            status.className = 'status success';
+            status.textContent = '✅ Critical error triggered - check error UI';
+        };
+
+        window.testFallbackDisplay = function() {
+            const status = document.getElementById('fallback-status');
+            const output = document.getElementById('test-output');
+            const displayHTML = window.fallbackComponents.generateDisplay('123.45');
+            output.innerHTML = displayHTML;
+            status.className = 'status success';
+            status.textContent = '✅ Fallback display generated';
+        };
+
+        window.testFallbackButtons = function() {
+            const status = document.getElementById('fallback-status');
+            const output = document.getElementById('test-output');
+            const buttonsHTML = window.fallbackComponents.generateButtons();
+            output.innerHTML = buttonsHTML;
+            status.className = 'status success';
+            status.textContent = '✅ Fallback buttons generated';
+        };
+
+        window.testEmergencyCalculator = function() {
+            const status = document.getElementById('fallback-status');
+            const output = document.getElementById('test-output');
+            const calculatorHTML = window.fallbackComponents.generateEmergencyCalculator();
+            output.innerHTML = calculatorHTML;
+            status.className = 'status success';
+            status.textContent = '✅ Emergency calculator generated';
+        };
+
+        window.testRecovery = async function() {
+            const status = document.getElementById('recovery-status');
+            
+            // Register a test recovery handler
+            window.errorBoundary.registerRecoveryHandler('test', () => {
+                return { success: true, message: 'Test recovery successful' };
+            });
+
+            const errorReport = {
+                category: 'test',
+                severity: ERROR_SEVERITY.MEDIUM,
+                message: 'Test error for recovery'
+            };
+
+            const result = await window.errorBoundary.attemptRecovery(errorReport);
+            
+            if (result.success) {
+                status.className = 'status success';
+                status.textContent = '✅ Error recovery successful';
+            } else {
+                status.className = 'status error';
+                status.textContent = '❌ Error recovery failed';
+            }
+        };
+
+        window.testRetry = async function() {
+            const status = document.getElementById('recovery-status');
+            let attempts = 0;
+            
+            const result = await window.errorBoundary.wrapOperation(() => {
+                attempts++;
+                if (attempts < 2) {
+                    throw new Error('Temporary failure');
+                }
+                return 'Success after retry';
+            }, ERROR_CATEGORIES.NETWORK, {
+                operation: () => {
+                    attempts++;
+                    if (attempts < 3) {
+                        throw new Error('Temporary failure');
+                    }
+                    return 'Success after retry';
+                }
+            });
+
+            status.className = 'status success';
+            status.textContent = `✅ Retry mechanism tested (${attempts} attempts)`;
+        };
+
+        window.showErrorStats = function() {
+            const status = document.getElementById('stats-display');
+            const stats = window.errorBoundary.getErrorStats();
+            
+            status.className = 'status info';
+            status.innerHTML = `
+                <strong>Error Statistics:</strong><br>
+                Total Errors: ${stats.totalErrors}<br>
+                Recent Errors: ${stats.recentErrors}<br>
+                In Error State: ${stats.isInErrorState}<br>
+                Categories: ${JSON.stringify(stats.errorsByCategory, null, 2)}
+            `;
+        };
+    </script>
+</body>
+</html>

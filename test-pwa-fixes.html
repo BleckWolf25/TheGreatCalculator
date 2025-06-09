@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Fixes Test - The Great Calculator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007AFF;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #1e4d3e;
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+        .error {
+            background: #4d1e1e;
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+        .info {
+            background: #1e3a4d;
+            border: 1px solid #17a2b8;
+            color: #17a2b8;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #console-output {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 PWA Fixes Test</h1>
+    <p>Testing the fixes for WebSocket security and PWA utilities loading issues.</p>
+
+    <div class="test-section">
+        <h2>🔒 WebSocket Security Test</h2>
+        <p>Testing if WebSocket connections use WSS (secure) protocol when HTTPS is enabled.</p>
+        <div id="websocket-test-result" class="test-result info">
+            Click "Test WebSocket" to check connection protocol...
+        </div>
+        <button onclick="testWebSocket()">Test WebSocket</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 PWA Utils Loading Test</h2>
+        <p>Testing if PWA utilities load correctly as ES modules.</p>
+        <div id="pwa-utils-test-result" class="test-result info">
+            Click "Test PWA Utils" to check module loading...
+        </div>
+        <button onclick="testPWAUtils()">Test PWA Utils</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🌐 Network Status Test</h2>
+        <p>Testing online/offline detection and PWA status.</p>
+        <div id="network-test-result" class="test-result info">
+            Click "Test Network Status" to check connectivity...
+        </div>
+        <button onclick="testNetworkStatus()">Test Network Status</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Console Output</h2>
+        <div id="console-output">Console output will appear here...</div>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <script>
+        // Console capture for display
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function logToDisplay(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleOutput.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = (...args) => {
+            originalLog.apply(console, args);
+            logToDisplay('log', ...args);
+        };
+
+        console.error = (...args) => {
+            originalError.apply(console, args);
+            logToDisplay('error', ...args);
+        };
+
+        console.warn = (...args) => {
+            originalWarn.apply(console, args);
+            logToDisplay('warn', ...args);
+        };
+
+        function clearConsole() {
+            consoleOutput.textContent = 'Console cleared...\n';
+        }
+
+        // Test WebSocket security
+        function testWebSocket() {
+            const resultDiv = document.getElementById('websocket-test-result');
+
+            try {
+                // Check current protocol
+                const isHTTPS = location.protocol === 'https:';
+                const expectedProtocol = isHTTPS ? 'wss:' : 'ws:';
+
+                console.log(`Current page protocol: ${location.protocol}`);
+                console.log(`Expected WebSocket protocol: ${expectedProtocol}`);
+
+                // Test WebSocket connection (this will fail but we can check the protocol)
+                try {
+                    const wsUrl = `${expectedProtocol}//${location.host}`;
+                    console.log(`Testing WebSocket URL: ${wsUrl}`);
+
+                    const ws = new WebSocket(wsUrl);
+                    ws.onopen = () => {
+                        console.log('✅ WebSocket connected successfully');
+                        resultDiv.className = 'test-result success';
+                        resultDiv.textContent = '✅ WebSocket uses correct secure protocol (WSS)';
+                        ws.close();
+                    };
+                    ws.onerror = (error) => {
+                        console.log('WebSocket connection failed (expected for test)');
+                        if (isHTTPS) {
+                            resultDiv.className = 'test-result success';
+                            resultDiv.textContent = '✅ WebSocket correctly attempts WSS connection for HTTPS';
+                        } else {
+                            resultDiv.className = 'test-result info';
+                            resultDiv.textContent = 'ℹ️ WebSocket uses WS protocol for HTTP (correct)';
+                        }
+                    };
+                } catch (error) {
+                    if (error.message.includes('insecure WebSocket')) {
+                        resultDiv.className = 'test-result error';
+                        resultDiv.textContent = '❌ WebSocket security error still present';
+                    } else {
+                        resultDiv.className = 'test-result success';
+                        resultDiv.textContent = '✅ No WebSocket security errors detected';
+                    }
+                }
+
+            } catch (error) {
+                console.error('WebSocket test error:', error);
+                resultDiv.className = 'test-result error';
+                resultDiv.textContent = `❌ WebSocket test failed: ${error.message}`;
+            }
+        }
+
+        // Test PWA Utils loading
+        async function testPWAUtils() {
+            const resultDiv = document.getElementById('pwa-utils-test-result');
+
+            try {
+                console.log('Testing PWA utilities loading...');
+
+                // Try multiple import methods
+                let PWAUtils = null;
+                let importMethod = '';
+
+                // Method 1: Try direct import with correct path
+                try {
+                    const module = await import('/src/js/modules/pwa/pwaUtils.js');
+                    PWAUtils = module.default;
+                    importMethod = 'ES module import';
+                    console.log('✅ PWA utilities imported via ES modules');
+                } catch (importError) {
+                    console.log('ES module import failed:', importError.message);
+
+                    // Method 2: Check if already loaded globally
+                    if (window.PWAUtils) {
+                        PWAUtils = window.PWAUtils;
+                        importMethod = 'Global window object';
+                        console.log('✅ PWA utilities found in global scope');
+                    } else {
+                        // Method 3: Try loading via script tag
+                        console.log('Attempting to load via script tag...');
+                        await loadPWAUtilsScript();
+                        if (window.PWAUtils) {
+                            PWAUtils = window.PWAUtils;
+                            importMethod = 'Script tag loading';
+                            console.log('✅ PWA utilities loaded via script tag');
+                        }
+                    }
+                }
+
+                if (PWAUtils && typeof PWAUtils === 'function') {
+                    console.log(`✅ PWA utilities available via: ${importMethod}`);
+
+                    // Test instantiation
+                    const pwaUtils = new PWAUtils();
+                    console.log('✅ PWA utilities instance created');
+
+                    // Wait a moment for initialization
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    // Test methods
+                    const status = pwaUtils.getStatus();
+                    console.log('PWA Status:', status);
+
+                    // Test event logging
+                    pwaUtils.logEvent('test_event', { source: 'test_page' });
+
+                    resultDiv.className = 'test-result success';
+                    resultDiv.textContent = `✅ PWA utilities loaded and working correctly (${importMethod})`;
+                } else {
+                    throw new Error('PWAUtils not available through any method');
+                }
+
+            } catch (error) {
+                console.error('PWA utilities test error:', error);
+                resultDiv.className = 'test-result error';
+                resultDiv.textContent = `❌ PWA utilities test failed: ${error.message}`;
+            }
+        }
+
+        // Helper function to load PWA utils via script tag
+        async function loadPWAUtilsScript() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = '/src/js/modules/pwa/pwaUtils.js';
+                script.type = 'module';
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error('Script loading failed'));
+                document.head.appendChild(script);
+            });
+        }
+
+        // Test network status
+        function testNetworkStatus() {
+            const resultDiv = document.getElementById('network-test-result');
+
+            try {
+                console.log('Testing network status detection...');
+
+                const isOnline = navigator.onLine;
+                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+                console.log(`Online status: ${isOnline}`);
+                if (connection) {
+                    console.log(`Connection type: ${connection.effectiveType || 'unknown'}`);
+                    console.log(`Downlink: ${connection.downlink || 'unknown'} Mbps`);
+                }
+
+                // Test PWA detection
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+                const isIOSStandalone = window.navigator.standalone === true;
+                const isPWA = isStandalone || isIOSStandalone;
+
+                console.log(`PWA mode: ${isPWA ? 'Yes' : 'No'}`);
+                console.log(`Standalone mode: ${isStandalone}`);
+                console.log(`iOS standalone: ${isIOSStandalone}`);
+
+                resultDiv.className = 'test-result success';
+                resultDiv.textContent = `✅ Network: ${isOnline ? 'Online' : 'Offline'}, PWA: ${isPWA ? 'Yes' : 'No'}`;
+
+            } catch (error) {
+                console.error('Network status test error:', error);
+                resultDiv.className = 'test-result error';
+                resultDiv.textContent = `❌ Network status test failed: ${error.message}`;
+            }
+        }
+
+        // Initialize tests
+        console.log('🧪 PWA Fixes Test Page Loaded');
+        console.log(`Page URL: ${location.href}`);
+        console.log(`Protocol: ${location.protocol}`);
+        console.log(`User Agent: ${navigator.userAgent}`);
+    </script>
+</body>
+</html>

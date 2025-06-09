@@ -58,3 +58,28 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - Inspired by iOS Calculator
+
+## Automated Releases & Changelog
+
+This project uses [semantic-release](https://semantic-release.gitbook.io/) for fully automated versioning and changelog generation. All changes are documented in [CHANGELOG.md](./CHANGELOG.md).
+
+### How it works
+
+- Version numbers are determined from commit messages using [Conventional Commits](https://www.conventionalcommits.org/).
+- On each release, the changelog is updated automatically.
+- No manual version bumps or changelog edits are needed.
+
+### Releasing
+
+To trigger a release and update the changelog, run:
+
+```sh
+npm run semantic-release
+```
+
+> **Note:** Releases are typically run in CI, but you can run them locally if you have push access.
+
+### Commit Message Guidelines
+
+- Use [Conventional Commits](https://www.conventionalcommits.org/) (e.g., `feat:`, `fix:`, `chore:`, `docs:`, etc.)
+- Example: `feat(export): add PDF export option`

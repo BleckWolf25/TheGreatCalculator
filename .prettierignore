@@ -1,0 +1,48 @@
+# Prettier Ignore File
+# Ignore all files in the coverage directory
+coverage/**
+
+# Ignore all files in the dist directory
+dist/**
+
+# Ignore all files in the build directory
+build/**
+
+# Ignore all files in the logs directory
+logs/**
+
+# Ignore all files in the node_modules directory
+node_modules/**
+
+# Ignore all files in the public directory
+public/**
+
+# Ignore all files in the tests directory
+tests/**
+
+# Ignore all files in the vite.config.js
+vite.config.js
+
+# Ignore all files in the tsconfig.json
+tsconfig.json
+
+# Ignore all files in the .gitignore
+.gitignore
+
+# Ignore all files in the .prettierignore
+.prettierignore
+
+# Ignore all files in the .prettierrc.js
+.prettierrc.js
+
+# Ignore all files in the .eslintrc.js
+.eslintrc.js
+
+# Ignore all files in the .eslintignore
+.eslintignore
+
+# Ignore all files in the .editorconfig
+.editorconfig
+
+# Ignore all files in the .gitattributes
+.gitattributes

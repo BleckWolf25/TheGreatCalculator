@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "path": "dist/assets/js/main-*.js",
+      "maxSize": "150 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/core-*.js",
+      "maxSize": "100 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/ui-*.js",
+      "maxSize": "50 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/api-*.js",
+      "maxSize": "30 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/storage-*.js",
+      "maxSize": "25 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/export-*.js",
+      "maxSize": "40 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/error-handling-*.js",
+      "maxSize": "35 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/performance-*.js",
+      "maxSize": "30 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/js/vendor-*.js",
+      "maxSize": "200 KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/assets/css/*.css",
+      "maxSize": "50 KB",
+      "compression": "gzip"
+    }
+  ],
+  "defaultCompression": "gzip",
+  "ci": {
+    "trackBranches": ["main", "dev"],
+    "repoBranchBase": "main"
+  }
+}
