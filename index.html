@@ -2,202 +2,482 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Title and Description -->
     <title>The Great Calculator</title>
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/responsive.css">
-    <link rel="stylesheet" href="./css/calculator.css">
+    <meta name="description" content="Advanced scientific calculator with memory functions, formula management, and accessibility features">
+    <meta name="keywords" content="calculator, scientific calculator, math, computation, PWA">
+    <meta name="author" content="Bleckwolf25">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="The Great Calculator">
+    <meta property="og:description" content="Advanced scientific calculator with memory functions and accessibility features">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/icons/icon.svg">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="The Great Calculator">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Great Calculator">
+    <meta name="twitter:description" content="Advanced scientific calculator with memory functions and accessibility features">
+    <meta name="twitter:image" content="/icons/icon.svg">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Theme colors -->
+    <meta name="theme-color" content="#007AFF">
+    <meta name="msapplication-TileColor" content="#007AFF">
+
+    <!-- Apple specific meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Calculator">
+    <link rel="apple-touch-startup-image" href="/icons/startup-568h.png" media="(device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/icons/startup-667h.png" media="(device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/icons/startup-736h.png" media="(device-height: 736px) and (-webkit-device-pixel-ratio: 3)">
+
+    <!-- Favicon and icons -->
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+
+    <!-- Resource hints for performance -->
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="preconnect" href="//cdnjs.cloudflare.com" crossorigin>
+
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="/src/styles/original-theme.css" as="style">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/src/styles/original-theme.css">
+    <link rel="stylesheet" href="/src/css/error-boundary.css">
+    <link rel="stylesheet" href="/src/css/accessibility.css">
+
+    <!-- Preload critical JS modules -->
+    <link rel="modulepreload" href="/src/js/main.js">
 </head>
 <body>
-    <div class="theme-switch">
-        <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
+
+    <!-- Theme toggle control -->
+    <div class="theme-switch" role="region" aria-label="Theme selection">
+        <input type="checkbox" id="theme-toggle" aria-label="Toggle between light and dark themes">
         <label for="theme-toggle" class="theme-label">
-            <span class="sun">☀️</span>
-            <span class="moon">🌙</span>
-            <span class="ripple"></span>
+            <span class="sun" aria-hidden="true">☀️</span>
+            <span class="moon" aria-hidden="true">🌙</span>
+            <span class="ripple" aria-hidden="true"></span>
         </label>
     </div>
-    
-    <div class="calculator">
-        <div class="display-container">
-            <div id="history" role="status" aria-live="polite"></div>
-            <input type="text" id="display" disabled aria-label="Calculator display" aria-describedby="history">
+
+    <!-- Main calculator application -->
+    <main id="calculator-main" role="application" aria-label="The Great Calculator">
+        <header>
+            <h1 class="visually-hidden">The Great Calculator</h1>
+        </header>
+
+        <!-- Calculator Container -->
+        <div class="calculator-container">
+            <!-- Display section -->
+            <section class="display-section" aria-labelledby="display-heading">
+                <h2 id="display-heading" class="visually-hidden">Calculator Display</h2>
+                <div class="display-wrapper">
+                    <div id="history"
+                         role="status"
+                         aria-live="polite"
+                         aria-label="Calculation history"
+                         class="history-display"></div>
+                    <input type="text"
+                           id="display"
+                           readonly
+                           tabindex="0"
+                           aria-label="Calculator display showing current calculation"
+                           aria-describedby="history display-help"
+                           class="main-display"
+                           value="0">
+                    <div id="display-help" class="visually-hidden">
+                        Current calculation result. Use Tab to navigate calculator buttons.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calculator Buttons Grid -->
+            <div class="calculator-grid" role="group" aria-label="Calculator buttons">
+
+                <!-- Row 1: Function buttons -->
+                <button class="btn btn-function"
+                        onclick="clearAll()"
+                        aria-label="Clear all">AC</button>
+                <button class="btn btn-function"
+                        onclick="toggleSign()"
+                        aria-label="Toggle positive/negative">±</button>
+                <button class="btn btn-function"
+                        onclick="calculate('percentage')"
+                        aria-label="Percentage">%</button>
+                <button class="btn btn-operator"
+                        onclick="setOperator('/')"
+                        aria-label="Divide">÷</button>
+
+                <!-- Row 2: Numbers 7-9 and multiply -->
+                <button class="btn btn-number"
+                        onclick="appendNumber('7')"
+                        aria-label="Seven">7</button>
+                <button class="btn btn-number"
+                        onclick="appendNumber('8')"
+                        aria-label="Eight">8</button>
+                <button class="btn btn-number"
+                        onclick="appendNumber('9')"
+                        aria-label="Nine">9</button>
+                <button class="btn btn-operator"
+                        onclick="setOperator('*')"
+                        aria-label="Multiply">×</button>
+
+                <!-- Row 3: Numbers 4-6 and subtract -->
+                <button class="btn btn-number"
+                        onclick="appendNumber('4')"
+                        aria-label="Four">4</button>
+                <button class="btn btn-number"
+                        onclick="appendNumber('5')"
+                        aria-label="Five">5</button>
+                <button class="btn btn-number"
+                        onclick="appendNumber('6')"
+                        aria-label="Six">6</button>
+                <button class="btn btn-operator"
+                        onclick="setOperator('-')"
+                        aria-label="Subtract">−</button>
+
+                <!-- Row 4: Numbers 1-3 and add -->
+                <button class="btn btn-number"
+                        onclick="appendNumber('1')"
+                        aria-label="One">1</button>
+                <button class="btn btn-number"
+                        onclick="appendNumber('2')"
+                        aria-label="Two">2</button>
+                <button class="btn btn-number"
+                        onclick="appendNumber('3')"
+                        aria-label="Three">3</button>
+                <button class="btn btn-operator"
+                        onclick="setOperator('+')"
+                        aria-label="Add">+</button>
+
+                <!-- Row 5: Zero, decimal, and equals -->
+                <button class="btn btn-number btn-zero"
+                        onclick="appendNumber('0')"
+                        aria-label="Zero">0</button>
+                <button class="btn btn-number"
+                        onclick="appendDecimal()"
+                        aria-label="Decimal point">.</button>
+                <button class="btn btn-equals"
+                        onclick="calculate('equals')"
+                        aria-label="Equals">=</button>
+            </div>
+
+
+            <!-- Scientific Functions Panel (Hidden by default) -->
+            <div class="scientific-panel" id="scientific-panel" aria-hidden="true">
+                <div class="scientific-grid">
+                    <!-- Row 1: Trigonometric functions -->
+                    <button class="btn btn-scientific"
+                            onclick="calculate('sin')"
+                            aria-label="Sine">sin</button>
+                    <button class="btn btn-scientific"
+                            onclick="calculate('cos')"
+                            aria-label="Cosine">cos</button>
+                    <button class="btn btn-scientific"
+                            onclick="calculate('tan')"
+                            aria-label="Tangent">tan</button>
+                    <button class="btn btn-scientific"
+                            onclick="toggleDegRad()"
+                            aria-label="Toggle degrees/radians">DEG</button>
+
+                    <!-- Row 2: Logarithmic functions -->
+                    <button class="btn btn-scientific"
+                            onclick="calculate('ln')"
+                            aria-label="Natural logarithm">ln</button>
+                    <button class="btn btn-scientific"
+                            onclick="calculate('log')"
+                            aria-label="Base 10 logarithm">log</button>
+                    <button class="btn btn-scientific"
+                            onclick="calculate('sqrt')"
+                            aria-label="Square root">√</button>
+                    <button class="btn btn-scientific"
+                            onclick="calculate('pow')"
+                            aria-label="Square">x²</button>
+
+                    <!-- Row 3: Advanced functions -->
+                    <button class="btn btn-scientific"
+                            onclick="calculate('exp')"
+                            aria-label="Exponential">eˣ</button>
+                    <button class="btn btn-scientific"
+                            onclick="calculate('factorial')"
+                            aria-label="Factorial">x!</button>
+                    <button class="btn btn-scientific"
+                            onclick="appendBracket('open')"
+                            aria-label="Open parenthesis">(</button>
+                    <button class="btn btn-scientific"
+                            onclick="appendBracket('close')"
+                            aria-label="Close parenthesis">)</button>
+
+                    <!-- Row 4: Memory and constants -->
+                    <button class="btn btn-scientific"
+                            onclick="memoryClear()"
+                            aria-label="Memory clear">MC</button>
+                    <button class="btn btn-scientific"
+                            onclick="memoryRecall()"
+                            aria-label="Memory recall">MR</button>
+                    <button class="btn btn-scientific"
+                            onclick="memoryStore()"
+                            aria-label="Memory store">MS</button>
+                    <button class="btn btn-scientific"
+                            onclick="appendNumber(Math.PI)"
+                            aria-label="Pi constant">π</button>
+                </div>
+            </div>
+
+
+            <!-- Toggle button for scientific mode -->
+            <button class="scientific-toggle"
+                    onclick="toggleScientificMode()"
+                    aria-label="Toggle scientific calculator mode"
+                    aria-expanded="false">
+                <span class="toggle-icon">⚙️</span>
+                <span class="toggle-text">Scientific</span>
+            </button>
         </div>
-        
-        <div class="buttons-grid">
-            <!-- Memory Functions -->
-            <button class="memory" type="button" onclick="memoryClear()" aria-label="Memory Clear">
-                <span>MC</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="memory" type="button" onclick="memoryRecall()" aria-label="Memory Recall">
-                <span>MR</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="memory" type="button" onclick="memoryAdd()" aria-label="Memory Add">
-                <span>M+</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="memory" type="button" onclick="memorySubtract()" aria-label="Memory Subtract">
-                <span>M-</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="memory" type="button" onclick="memoryStore()" aria-label="Memory Store">
-                <span>MS</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <!-- Scientific Functions -->
-            <button class="scientific" type="button" onclick="calculate('sin')" aria-label="Sine">
-                <span>sin</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('cos')" aria-label="Cosine">
-                <span>cos</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('tan')" aria-label="Tangent">
-                <span>tan</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('log')" aria-label="Logarithm">
-                <span>log</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('ln')" aria-label="Natural Logarithm">
-                <span>ln</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('sqrt')" aria-label="Square Root">
-                <span>√</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('pow')" aria-label="Power">
-                <span>x²</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('exp')" aria-label="Exponential">
-                <span>EXP</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="calculate('factorial')" aria-label="Factorial">
-                <span>n!</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="toggleDegRad()" aria-label="Toggle Degree/Radian">
-                <span>DEG</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="scientific" type="button" onclick="showKeyboardShortcuts()" aria-label="Keyboard shortcuts">
-                <span>⌨️</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <!-- Clear and Delete -->
-            <button class="clear" type="button" onclick="clearAll()" aria-label="Clear All">
-                <span>C</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="clear" type="button" onclick="clearEntry()" aria-label="Clear Entry">
-                <span>CE</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="clear" type="button" onclick="backspace()" aria-label="Backspace">
-                <span>⌫</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="operator" type="button" onclick="setOperator('/')" aria-label="Divide">
-                <span>/</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <!-- Numbers and Operators -->
-            <button class="number" type="button" onclick="appendNumber('7')" aria-label="7">
-                <span>7</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendNumber('8')" aria-label="8">
-                <span>8</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendNumber('9')" aria-label="9">
-                <span>9</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="operator" type="button" onclick="setOperator('*')" aria-label="Multiply">
-                <span>×</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <button class="number" type="button" onclick="appendNumber('4')" aria-label="4">
-                <span>4</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendNumber('5')" aria-label="5">
-                <span>5</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendNumber('6')" aria-label="6">
-                <span>6</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="operator" type="button" onclick="setOperator('-')" aria-label="Subtract">
-                <span>-</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <button class="number" type="button" onclick="appendNumber('1')" aria-label="1">
-                <span>1</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendNumber('2')" aria-label="2">
-                <span>2</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendNumber('3')" aria-label="3">
-                <span>3</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="operator" type="button" onclick="setOperator('+')" aria-label="Add">
-                <span>+</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <button class="number zero" type="button" onclick="appendNumber('0')" aria-label="0">
-                <span>0</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="number" type="button" onclick="appendDecimal()" aria-label="Decimal Point">
-                <span>.</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="equals" type="button" onclick="calculate('equals')" aria-label="Equals">
-                <span>=</span>
-                <span class="ripple"></span>
-            </button>
-            
-            <!-- Constants -->
-            <button class="constant" type="button" onclick="appendNumber(Math.PI)" aria-label="Pi">
-                <span>π</span>
-                <span class="ripple"></span>
-            </button>
-            <button class="constant" type="button" onclick="appendNumber(Math.E)" aria-label="Euler's Number">
-                <span>e</span>
-                <span class="ripple"></span>
-            </button>
+
+        <!-- Additional Controls -->
+        <div class="calculator-controls">
+            <button class="control-btn" id="accessibility-settings-btn" onclick="showAccessibilitySettings()" aria-label="Open accessibility settings">♿</button>
+            <button class="control-btn" onclick="undo()" aria-label="Undo">↶</button>
+            <button class="control-btn" onclick="redo()" aria-label="Redo">↷</button>
+            <button class="control-btn" onclick="showHistory()" aria-label="History">📜</button>
         </div>
-    </div>
-    <div class="credits">
-        <span>© 2025</span> Created with ❤️ by <strong>Bleckwolf25</strong>
-    </div>
-    <div class="loading-overlay" aria-hidden="true">
-        <div class="loading-spinner"></div>
-    </div>
-    <script src="./js/calculator.js"></script>
-    <script src="./js/display.js"></script>
+
+        <!-- History Modal -->
+        <div id="history-modal" class="modal" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Calculation History</h2>
+                    <button class="close-btn" onclick="closeHistoryModal()" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <ul id="history-list" class="history-list"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Application footer -->
+    <footer class="credits" role="contentinfo">
+        <p>
+            <span aria-hidden="true">© 2025</span>
+            Created with <span aria-label="love" aria-hidden="true">❤️</span> by
+            <strong>Bleckwolf25</strong>
+        </p>
+    </footer>
+
+    <!-- Vercel Analytics & Speed Insights -->
+    <script>
+        // Initialize Vercel monitoring only in production
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're in production environment
+            const isProduction = window.location.hostname !== 'localhost' &&
+                                window.location.hostname !== '127.0.0.1' &&
+                                !window.location.hostname.includes('dev') &&
+                                window.location.hostname.includes('vercel.app');
+
+            if (isProduction) {
+                console.log('📊 Production environment detected - initializing Vercel monitoring');
+
+                // Load Vercel Analytics via CDN
+                const analyticsScript = document.createElement('script');
+                analyticsScript.src = 'https://va.vercel-scripts.com/v1/script.js';
+                analyticsScript.defer = true;
+                analyticsScript.onload = () => {
+                    console.log('📈 Vercel Analytics loaded');
+                    if (window.va) {
+                        window.va('pageview');
+                    }
+                };
+                analyticsScript.onerror = () => {
+                    console.warn('⚠️ Failed to load Vercel Analytics');
+                };
+                document.head.appendChild(analyticsScript);
+
+                // Load Speed Insights via CDN
+                const speedScript = document.createElement('script');
+                speedScript.src = 'https://va.vercel-scripts.com/v1/speed-insights/script.js';
+                speedScript.defer = true;
+                speedScript.onload = () => {
+                    console.log('⚡ Vercel Speed Insights loaded');
+                };
+                speedScript.onerror = () => {
+                    console.warn('⚠️ Failed to load Vercel Speed Insights');
+                };
+                document.head.appendChild(speedScript);
+            } else {
+                console.log('🔧 Development mode - Vercel monitoring disabled');
+            }
+        });
+    </script>
+
+    <!-- Modular Calculator System -->
+    <script type="module" src="/src/js/main.js"></script>
+
+    <!-- UI Helper Functions -->
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const savedTheme = localStorage.getItem('calculator-theme') || 'dark';
+
+            // Apply saved theme
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            if (themeToggle) {
+                themeToggle.checked = savedTheme === 'light';
+
+                // Theme toggle event
+                themeToggle.addEventListener('change', function() {
+                    const theme = this.checked ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', theme);
+                    localStorage.setItem('calculator-theme', theme);
+                });
+            } else {
+                console.warn('Theme toggle element not found');
+            }
+        });
+
+        // Toggle scientific mode
+        function toggleScientificMode() {
+            const panel = document.getElementById('scientific-panel');
+            const toggle = document.querySelector('.scientific-toggle');
+            const isVisible = panel.getAttribute('aria-hidden') === 'false';
+            const newVisibility = !isVisible;
+
+            // Update aria attributes
+            panel.setAttribute('aria-hidden', !newVisibility);
+            toggle.setAttribute('aria-expanded', newVisibility);
+
+            // Update display
+            panel.style.display = newVisibility ? 'block' : 'none';
+
+            // Manage focus and tabindex for accessibility
+            const scientificButtons = panel.querySelectorAll('button');
+            scientificButtons.forEach(button => {
+                if (newVisibility) {
+                    // Make buttons focusable when panel is visible
+                    button.removeAttribute('tabindex');
+                } else {
+                    // Make buttons unfocusable when panel is hidden
+                    button.setAttribute('tabindex', '-1');
+                    // Remove focus if any button was focused
+                    if (document.activeElement === button) {
+                        toggle.focus();
+                    }
+                }
+            });
+        }
+
+        // Toggle sign function
+        function toggleSign() {
+            if (window.calculatorInstance) {
+                const currentValue = window.calculatorInstance.getCurrentValue();
+                if (currentValue !== '0') {
+                    const newValue = currentValue.startsWith('-')
+                        ? currentValue.substring(1)
+                        : '-' + currentValue;
+                    window.calculatorInstance.modules.state.updateState({
+                        currentValue: newValue
+                    });
+                }
+            }
+        }
+
+        // Show history modal
+        function showHistory() {
+            const modal = document.getElementById('history-modal');
+            modal.setAttribute('aria-hidden', 'false');
+            modal.style.display = 'flex';
+
+            // Populate history
+            if (window.calculatorInstance) {
+                const state = window.calculatorInstance.modules.state.getState();
+                const historyList = document.getElementById('history-list');
+                historyList.innerHTML = '';
+
+                state.history.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    historyList.appendChild(li);
+                });
+            }
+        }
+
+        // Close history modal
+        function closeHistoryModal() {
+            const modal = document.getElementById('history-modal');
+            modal.setAttribute('aria-hidden', 'true');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('history-modal');
+            if (e.target === modal) {
+                closeHistoryModal();
+            }
+        });
+
+        // Show accessibility settings
+        function showAccessibilitySettings() {
+            if (window.accessibilitySettings) {
+                window.accessibilitySettings.showSettingsPanel();
+            } else {
+                console.warn('Accessibility settings not available');
+            }
+        }
+
+        // Add button press animation and initialize accessibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('pressed');
+                    setTimeout(() => {
+                        this.classList.remove('pressed');
+                    }, 100);
+                });
+            });
+
+            // Initialize scientific panel accessibility
+            const scientificPanel = document.getElementById('scientific-panel');
+            if (scientificPanel) {
+                const scientificButtons = scientificPanel.querySelectorAll('button');
+                const isHidden = scientificPanel.getAttribute('aria-hidden') === 'true';
+
+                if (isHidden) {
+                    scientificButtons.forEach(button => {
+                        button.setAttribute('tabindex', '-1');
+                    });
+                }
+            } else {
+                console.warn('Scientific panel not found');
+            }
+        });
+
+        // Legacy compatibility fallback
+        window.addEventListener('error', function(e) {
+            if (e.message && e.message.includes('Calculator initialization failed')) {
+                console.warn('Modular system failed, loading legacy fallback...');
+                const legacyScript1 = document.createElement('script');
+                legacyScript1.src = '/src/js/calculator.js';
+                legacyScript1.defer = true;
+                document.head.appendChild(legacyScript1);
+            }
+        });
+    </script>
 </body>
 </html>

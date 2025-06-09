@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Module Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .log {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        .info { background: #e3f2fd; color: #1565c0; }
+    </style>
+</head>
+<body>
+    <h1>Simple Module Loading Test</h1>
+    <div id="output"></div>
+    
+    <!-- Required DOM elements for calculator -->
+    <div style="display: none;">
+        <div id="display">0</div>
+        <div id="history"></div>
+    </div>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            console.log(message);
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = message;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        async function testBasicModuleLoading() {
+            try {
+                log('🚀 Starting basic module loading test...', 'info');
+                
+                // Test 1: Load ModuleLoader
+                log('📦 Loading ModuleLoader...', 'info');
+                const moduleLoaderModule = await import('./src/js/moduleLoader.js');
+                const { ModuleLoader, LegacyCompatibility } = moduleLoaderModule;
+                log('✅ ModuleLoader imported successfully', 'success');
+                
+                // Test 2: Create ModuleLoader instance
+                log('🔧 Creating ModuleLoader instance...', 'info');
+                const moduleLoader = new ModuleLoader();
+                log('✅ ModuleLoader instance created', 'success');
+                
+                // Test 3: Load all modules
+                log('📚 Loading all modules...', 'info');
+                const modules = await moduleLoader.loadAllModules();
+                log(`✅ Modules loaded: ${Object.keys(modules).join(', ')}`, 'success');
+                
+                // Test 4: Check each module type
+                log('🔍 Checking module types...', 'info');
+                for (const [name, ModuleClass] of Object.entries(modules)) {
+                    const type = typeof ModuleClass;
+                    log(`${name}: ${type}`, type === 'function' ? 'success' : 'error');
+                }
+                
+                // Test 5: Try to create Calculator
+                log('🧮 Testing Calculator creation...', 'info');
+                if (modules.Calculator && typeof modules.Calculator === 'function') {
+                    const calculator = new modules.Calculator(modules);
+                    log('✅ Calculator instance created', 'success');
+                    
+                    // Test 6: Try to initialize Calculator
+                    log('⚙️ Initializing Calculator...', 'info');
+                    const initResult = await calculator.initialize();
+                    if (initResult) {
+                        log('✅ Calculator initialized successfully', 'success');
+                        
+                        // Test 7: Setup legacy compatibility
+                        log('🔗 Setting up legacy compatibility...', 'info');
+                        const legacyCompatibility = new LegacyCompatibility(calculator);
+                        log('✅ Legacy compatibility setup complete', 'success');
+                        
+                        // Test 8: Check global functions
+                        log('🌐 Checking global functions...', 'info');
+                        const globalFunctions = ['appendNumber', 'setOperator', 'calculate', 'clearAll'];
+                        let allFunctionsAvailable = true;
+                        globalFunctions.forEach(func => {
+                            if (typeof window[func] === 'function') {
+                                log(`✅ ${func}: Available`, 'success');
+                            } else {
+                                log(`❌ ${func}: Not available`, 'error');
+                                allFunctionsAvailable = false;
+                            }
+                        });
+                        
+                        if (allFunctionsAvailable) {
+                            log('🎉 ALL TESTS PASSED! Calculator is ready to use.', 'success');
+                        } else {
+                            log('⚠️ Some global functions are missing', 'error');
+                        }
+                        
+                    } else {
+                        log('❌ Calculator initialization failed', 'error');
+                    }
+                } else {
+                    log('❌ Calculator module is not a function', 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Test failed: ${error.message}`, 'error');
+                log(`Stack: ${error.stack}`, 'error');
+            }
+        }
+        
+        // Run the test
+        testBasicModuleLoading();
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+{
+  "version": 2,
+  "name": "the-great-calculator",
+  "alias": ["calculator", "great-calculator"],
+
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "VITE_APP_NAME": "The Great Calculator",
+      "VITE_BUILD_TARGET": "vercel",
+      "VITE_VERCEL_ANALYTICS_ID": "@vercel-analytics-id",
+      "VITE_VERCEL_SPEED_INSIGHTS": "true",
+      "VITE_VERCEL_ENV": "@vercel-env",
+      "VITE_VERCEL_URL": "@vercel-url",
+      "VITE_VERCEL_REGION": "@vercel-region"
+    }
+  },
+
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm ci --production=false",
+
+  "routes": [
+    {
+      "src": "/manifest.json",
+      "headers": {
+        "Content-Type": "application/manifest+json",
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/sw.js",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "headers": {
+        "Content-Type": "text/plain",
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/sitemap.xml",
+      "headers": {
+        "Content-Type": "application/xml",
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/favicon.ico",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/icons/(.*)",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/assets/images/(.*)",
+      "headers": {
+        "Content-Type": "image/*",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/assets/css/(.*)\\.css$",
+      "headers": {
+        "Content-Type": "text/css",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/assets/js/(.*)\\.js$",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/assets/fonts/(.*)",
+      "headers": {
+        "Content-Type": "font/*",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ],
+
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=86400, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+
+  "redirects": [
+    {
+      "source": "/calc",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/calculator",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+
+  "rewrites": [
+    {
+      "source": "/api/calculator/(.*)",
+      "destination": "/api/calculator"
+    },
+    {
+      "source": "/api/analytics/(.*)",
+      "destination": "/api/analytics"
+    },
+    {
+      "source": "/api/performance/(.*)",
+      "destination": "/api/performance"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+
+  "regions": ["iad1", "sfo1", "fra1"],
+
+  "github": {
+    "silent": true,
+    "autoAlias": false
+  },
+
+  "cleanUrls": true,
+  "trailingSlash": false,
+
+  "crons": [
+    {
+      "path": "/api/analytics/aggregate",
+      "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/performance/cleanup",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/health",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

@@ -1,0 +1,518 @@
+/**
+ * @file ACCESSIBILITY STYLES
+ *
+ * @version 1.0.0
+ * @author Bleckwolf25
+ * @contributors
+ * @license MIT
+ *
+ * @description
+ * Comprehensive accessibility styles for The Great Calculator supporting
+ * users with motor, cognitive, visual, and auditory disabilities.
+ * Implements WCAG 2.1 AAA compliance and advanced accessibility features.
+ */
+
+/* ------------ CORE ACCESSIBILITY UTILITIES ------------ */
+
+/* Screen reader only content */
+.sr-only,
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Skip links for keyboard navigation */
+.skip-links {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    z-index: 1000;
+}
+
+.skip-link {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    background: var(--accent-color, #007bff);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.skip-link:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    left: auto;
+    top: auto;
+    outline: 3px solid #ffff00;
+    outline-offset: 2px;
+}
+
+/* ------------ FOCUS MANAGEMENT ------------ */
+
+/* Focus indicators */
+*:focus {
+    outline: 3px solid var(--focus-color, #005fcc);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+/* High contrast focus for better visibility */
+.high-contrast *:focus {
+    outline: 4px solid #ffff00;
+    outline-offset: 3px;
+    background-color: #000080 !important;
+    color: #ffffff !important;
+}
+
+/* Focus trap for modals and dialogs */
+.focus-trap {
+    position: relative;
+}
+
+.focus-trap::before,
+.focus-trap::after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ------------ MOTOR ACCESSIBILITY ------------ */
+
+/* Large target areas (minimum 44px) */
+.large-targets button,
+.large-targets input,
+.large-targets [role="button"],
+.large-targets a {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 12px !important;
+    margin: 4px !important;
+}
+
+/* Dwell control hover state */
+.dwell-hover {
+    background-color: var(--accent-color, #007bff) !important;
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    animation: dwell-progress 1s linear;
+}
+
+@keyframes dwell-progress {
+    0% { box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3); }
+    100% { box-shadow: 0 4px 12px rgba(0, 123, 255, 0.8), inset 0 0 0 3px rgba(255, 255, 255, 0.5); }
+}
+
+/* Reduced motion support */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* Switch control indicators */
+.switch-control .current-switch {
+    outline: 4px solid #ff6b35;
+    outline-offset: 4px;
+    background-color: rgba(255, 107, 53, 0.1);
+}
+
+/* ------------ COGNITIVE ACCESSIBILITY ------------ */
+
+/* Simplified interface mode */
+.simplified-interface {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+.simplified-interface .advanced-features,
+.simplified-interface .decorative {
+    display: none !important;
+}
+
+.simplified-interface button {
+    font-size: 1.2em !important;
+    padding: 16px !important;
+    border: 2px solid currentColor !important;
+    border-radius: 8px !important;
+    background-color: var(--btn-bg, #f8f9fa) !important;
+    margin: 4px !important;
+}
+
+.simplified-interface .calculator-display {
+    font-size: 2em !important;
+    padding: 20px !important;
+    border: 3px solid var(--border-color, #dee2e6) !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Help indicators */
+.help-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent-color, #007bff);
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.help-icon:hover,
+.help-icon:focus {
+    background: var(--accent-color-dark, #0056b3);
+    transform: scale(1.1);
+}
+
+/* Confirmation dialogs */
+.confirmation-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 3px solid var(--accent-color, #007bff);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 400px;
+    text-align: center;
+}
+
+.confirmation-dialog h2 {
+    margin-top: 0;
+    color: var(--text-color, #333);
+}
+
+.confirmation-dialog button {
+    margin: 8px;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 4px;
+    border: 2px solid currentColor;
+    cursor: pointer;
+}
+
+/* Reading guide */
+.reading-guide {
+    position: relative;
+}
+
+.reading-guide::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-color, #007bff), transparent);
+    animation: reading-guide 3s ease-in-out infinite;
+}
+
+@keyframes reading-guide {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+}
+
+/* ------------ VISUAL ACCESSIBILITY ------------ */
+
+/* High contrast mode */
+.high-contrast {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.high-contrast button {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+.high-contrast button:hover,
+.high-contrast button:focus {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+    border-color: #ffff00 !important;
+}
+
+.high-contrast .calculator-display {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #ffffff !important;
+}
+
+/* Large text support */
+.large-text {
+    font-size: 1.25em !important;
+    line-height: 1.6 !important;
+}
+
+.large-text button {
+    font-size: 1.5em !important;
+    padding: 16px !important;
+    min-width: 60px !important;
+    min-height: 60px !important;
+}
+
+.large-text .calculator-display {
+    font-size: 2.5em !important;
+    padding: 24px !important;
+}
+
+.large-text input {
+    font-size: 1.3em !important;
+    padding: 12px !important;
+}
+
+/* Color blindness support */
+.colorblind-support .btn-operator {
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.2) 2px,
+        rgba(255, 255, 255, 0.2) 4px
+    ) !important;
+    position: relative;
+}
+
+.colorblind-support .btn-operator::before {
+    content: '⚬';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+.colorblind-support .btn-number {
+    border: 2px solid currentColor !important;
+    position: relative;
+}
+
+.colorblind-support .btn-number::before {
+    content: '●';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 0.6em;
+    opacity: 0.5;
+}
+
+.colorblind-support .btn-equals {
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.2) 1px,
+        transparent 1px
+    ) !important;
+    background-size: 8px 8px !important;
+}
+
+.colorblind-support .btn-equals::before {
+    content: '=';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Reduced transparency */
+.reduced-transparency * {
+    opacity: 1 !important;
+    background-color: var(--bg-color, #ffffff) !important;
+}
+
+.reduced-transparency .modal,
+.reduced-transparency .overlay {
+    background-color: #ffffff !important;
+    border: 2px solid var(--border-color, #dee2e6) !important;
+}
+
+/* ------------ AUDIO ACCESSIBILITY ------------ */
+
+/* Visual feedback for audio cues */
+.visual-feedback {
+    animation: flash 0.2s ease-in-out;
+}
+
+@keyframes flash {
+    0%, 100% {
+        background-color: var(--btn-bg, #f8f9fa);
+        box-shadow: none;
+    }
+    50% {
+        background-color: var(--accent-color, #007bff);
+        color: white;
+        box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+    }
+}
+
+/* Sound visualization */
+.sound-indicator {
+    position: relative;
+}
+
+.sound-indicator::after {
+    content: '🔊';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.8em;
+    opacity: 0;
+    animation: sound-pulse 0.5s ease-in-out;
+}
+
+.sound-indicator.active::after {
+    opacity: 1;
+}
+
+@keyframes sound-pulse {
+    0%, 100% { transform: scale(1); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ------------ DYSLEXIA SUPPORT ------------ */
+
+.dyslexia-support {
+    font-family: 'OpenDyslexic', 'Comic Sans MS', cursive !important;
+    letter-spacing: 0.1em !important;
+    word-spacing: 0.2em !important;
+    line-height: 1.8 !important;
+}
+
+.dyslexia-support button {
+    font-weight: bold !important;
+    border: 2px solid currentColor !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+}
+
+.dyslexia-support .calculator-display {
+    background: #f0f0f0 !important;
+    color: #333 !important;
+    font-size: 1.5em !important;
+    border: 3px solid #333 !important;
+    border-radius: 8px !important;
+}
+
+.dyslexia-support p,
+.dyslexia-support span,
+.dyslexia-support div {
+    text-align: left !important;
+    margin-bottom: 0.5em !important;
+}
+
+/* ------------ VOICE CONTROL INDICATORS ------------ */
+
+.voice-control-active {
+    position: relative;
+}
+
+.voice-control-active::before {
+    content: '🎤';
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    background: rgba(0, 123, 255, 0.9);
+    color: white;
+    padding: 8px;
+    border-radius: 50%;
+    z-index: 1000;
+    animation: voice-pulse 1s ease-in-out infinite;
+}
+
+@keyframes voice-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.voice-listening::before {
+    background: rgba(255, 0, 0, 0.9) !important;
+    animation: voice-listening 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes voice-listening {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* ------------ RESPONSIVE ACCESSIBILITY ------------ */
+
+@media (max-width: 768px) {
+    .large-targets button,
+    .large-targets input,
+    .large-targets [role="button"] {
+        min-width: 48px !important;
+        min-height: 48px !important;
+        padding: 14px !important;
+    }
+
+    .skip-link:focus {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    .help-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reduced-motion *,
+    .reduced-motion *::before,
+    .reduced-motion *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (prefers-contrast: high) {
+    :root {
+        --focus-color: #ffff00;
+        --accent-color: #0000ff;
+        --text-color: #000000;
+        --bg-color: #ffffff;
+        --border-color: #000000;
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    * {
+        opacity: 1 !important;
+        backdrop-filter: none !important;
+    }
+}

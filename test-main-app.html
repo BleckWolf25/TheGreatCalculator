@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main App Test - The Great Calculator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007AFF;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #1e4d3e;
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+        .error {
+            background: #4d1e1e;
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+        .info {
+            background: #1e3a4d;
+            border: 1px solid #17a2b8;
+            color: #17a2b8;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #console-output {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧮 Main App Integration Test</h1>
+    <p>Testing the main calculator application with PWA fixes applied.</p>
+
+    <div class="test-section">
+        <h2>📱 PWA Integration Test</h2>
+        <p>Testing if PWA utilities are properly loaded in the main application.</p>
+        <div id="pwa-integration-result" class="test-result info">
+            Click "Test PWA Integration" to check main app PWA functionality...
+        </div>
+        <button onclick="testPWAIntegration()">Test PWA Integration</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Module Loading Test</h2>
+        <p>Testing if the main application modules load without errors.</p>
+        <div id="module-loading-result" class="test-result info">
+            Click "Test Module Loading" to check module system...
+        </div>
+        <button onclick="testModuleLoading()">Test Module Loading</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🌐 Service Worker Test</h2>
+        <p>Testing service worker registration and functionality.</p>
+        <div id="service-worker-result" class="test-result info">
+            Click "Test Service Worker" to check SW status...
+        </div>
+        <button onclick="testServiceWorker()">Test Service Worker</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Console Output</h2>
+        <div id="console-output">Console output will appear here...</div>
+        <button onclick="clearConsole()">Clear Console</button>
+        <button onclick="loadMainApp()">Load Main Calculator App</button>
+    </div>
+
+    <script>
+        // Console capture for display
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function logToDisplay(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleOutput.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = (...args) => {
+            originalLog.apply(console, args);
+            logToDisplay('log', ...args);
+        };
+
+        console.error = (...args) => {
+            originalError.apply(console, args);
+            logToDisplay('error', ...args);
+        };
+
+        console.warn = (...args) => {
+            originalWarn.apply(console, args);
+            logToDisplay('warn', ...args);
+        };
+
+        function clearConsole() {
+            consoleOutput.textContent = 'Console cleared...\n';
+        }
+
+        // Test PWA integration
+        async function testPWAIntegration() {
+            const resultDiv = document.getElementById('pwa-integration-result');
+            
+            try {
+                console.log('Testing PWA integration...');
+                
+                // Check if main app has loaded PWA utilities
+                if (window.PWAUtils) {
+                    console.log('✅ PWAUtils found in global scope');
+                    
+                    const pwaUtils = new window.PWAUtils();
+                    const status = pwaUtils.getStatus();
+                    console.log('PWA Status:', status);
+                    
+                    resultDiv.className = 'test-result success';
+                    resultDiv.textContent = '✅ PWA utilities integrated successfully';
+                } else {
+                    // Try to load PWA utilities
+                    console.log('Loading PWA utilities...');
+                    const { default: PWAUtils } = await import('/src/js/modules/pwa/pwaUtils.js');
+                    
+                    if (PWAUtils) {
+                        window.PWAUtils = PWAUtils;
+                        const pwaUtils = new PWAUtils();
+                        const status = pwaUtils.getStatus();
+                        console.log('PWA Status:', status);
+                        
+                        resultDiv.className = 'test-result success';
+                        resultDiv.textContent = '✅ PWA utilities loaded and working';
+                    } else {
+                        throw new Error('PWAUtils not available');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('PWA integration test error:', error);
+                resultDiv.className = 'test-result error';
+                resultDiv.textContent = `❌ PWA integration test failed: ${error.message}`;
+            }
+        }
+
+        // Test module loading
+        async function testModuleLoading() {
+            const resultDiv = document.getElementById('module-loading-result');
+            
+            try {
+                console.log('Testing module loading system...');
+                
+                // Try to load the module loader
+                const { default: ModuleLoader } = await import('/src/js/moduleLoader.js');
+                
+                if (ModuleLoader) {
+                    console.log('✅ ModuleLoader imported successfully');
+                    
+                    const moduleLoader = new ModuleLoader();
+                    console.log('✅ ModuleLoader instance created');
+                    
+                    resultDiv.className = 'test-result success';
+                    resultDiv.textContent = '✅ Module loading system working correctly';
+                } else {
+                    throw new Error('ModuleLoader not available');
+                }
+                
+            } catch (error) {
+                console.error('Module loading test error:', error);
+                resultDiv.className = 'test-result error';
+                resultDiv.textContent = `❌ Module loading test failed: ${error.message}`;
+            }
+        }
+
+        // Test service worker
+        async function testServiceWorker() {
+            const resultDiv = document.getElementById('service-worker-result');
+            
+            try {
+                console.log('Testing service worker...');
+                
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    
+                    if (registration) {
+                        console.log('✅ Service worker is registered');
+                        console.log('SW State:', registration.active?.state);
+                        console.log('SW Scope:', registration.scope);
+                        
+                        resultDiv.className = 'test-result success';
+                        resultDiv.textContent = `✅ Service worker active (${registration.active?.state})`;
+                    } else {
+                        console.log('No service worker registration found');
+                        resultDiv.className = 'test-result info';
+                        resultDiv.textContent = 'ℹ️ No service worker registered yet';
+                    }
+                } else {
+                    throw new Error('Service workers not supported');
+                }
+                
+            } catch (error) {
+                console.error('Service worker test error:', error);
+                resultDiv.className = 'test-result error';
+                resultDiv.textContent = `❌ Service worker test failed: ${error.message}`;
+            }
+        }
+
+        // Load main calculator app
+        function loadMainApp() {
+            console.log('Loading main calculator application...');
+            window.location.href = '/';
+        }
+
+        // Initialize tests
+        console.log('🧮 Main App Integration Test Page Loaded');
+        console.log(`Page URL: ${location.href}`);
+        console.log(`Protocol: ${location.protocol}`);
+        
+        // Auto-run basic tests
+        setTimeout(() => {
+            testServiceWorker();
+        }, 1000);
+    </script>
+</body>
+</html>

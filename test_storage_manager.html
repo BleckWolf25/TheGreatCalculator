@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Manager Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #console {
+            background-color: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Storage Manager Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="testIndexedDB()">Test IndexedDB</button>
+        <button onclick="testLocalStorage()">Test LocalStorage</button>
+        <button onclick="testMemoryStorage()">Test Memory Storage</button>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Console Output</h2>
+        <div id="console"></div>
+    </div>
+
+    <script type="module">
+        import CalculatorStorageManager from './src/js/modules/storage/storageManager.js';
+
+        let storageManager;
+        const results = document.getElementById('results');
+        const consoleDiv = document.getElementById('console');
+
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function logToDiv(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleDiv.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        console.log = (...args) => {
+            originalLog(...args);
+            logToDiv(args.join(' '), 'log');
+        };
+
+        console.error = (...args) => {
+            originalError(...args);
+            logToDiv(args.join(' '), 'error');
+        };
+
+        console.warn = (...args) => {
+            originalWarn(...args);
+            logToDiv(args.join(' '), 'warn');
+        };
+
+        function addResult(message, success = true) {
+            const div = document.createElement('div');
+            div.className = `test-result ${success ? 'success' : 'error'}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        function addInfo(message) {
+            const div = document.createElement('div');
+            div.className = 'test-result info';
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        async function initializeStorageManager() {
+            try {
+                storageManager = new CalculatorStorageManager();
+                const success = await storageManager.initialize();
+                if (success) {
+                    addResult('✅ Storage Manager initialized successfully');
+                    return true;
+                } else {
+                    addResult('❌ Storage Manager initialization failed', false);
+                    return false;
+                }
+            } catch (error) {
+                addResult(`❌ Storage Manager initialization error: ${error.message}`, false);
+                return false;
+            }
+        }
+
+        async function testBasicOperations(backendName) {
+            try {
+                addInfo(`Testing ${backendName} backend...`);
+                
+                // Test data
+                const testKey = 'test_key';
+                const testData = { 
+                    message: 'Hello World', 
+                    timestamp: Date.now(),
+                    array: [1, 2, 3],
+                    nested: { a: 1, b: 2 }
+                };
+
+                // Test save
+                const saveResult = await storageManager.save(testKey, testData);
+                if (saveResult) {
+                    addResult(`✅ ${backendName}: Save operation successful`);
+                } else {
+                    addResult(`❌ ${backendName}: Save operation failed`, false);
+                    return false;
+                }
+
+                // Test load
+                const loadedData = await storageManager.load(testKey);
+                if (loadedData && JSON.stringify(loadedData) === JSON.stringify(testData)) {
+                    addResult(`✅ ${backendName}: Load operation successful`);
+                } else {
+                    addResult(`❌ ${backendName}: Load operation failed or data mismatch`, false);
+                    return false;
+                }
+
+                // Test stats
+                const stats = await storageManager.getStorageStats();
+                addInfo(`${backendName} Stats: Backend=${stats.backend}, Keys=${stats.keys || stats.itemCount}, Size=${stats.estimatedSize || stats.totalSize} bytes`);
+
+                // Test remove
+                const removeResult = await storageManager.remove(testKey);
+                if (removeResult) {
+                    addResult(`✅ ${backendName}: Remove operation successful`);
+                } else {
+                    addResult(`❌ ${backendName}: Remove operation failed`, false);
+                    return false;
+                }
+
+                // Verify removal
+                const removedData = await storageManager.load(testKey);
+                if (removedData === null) {
+                    addResult(`✅ ${backendName}: Data successfully removed`);
+                } else {
+                    addResult(`❌ ${backendName}: Data not properly removed`, false);
+                    return false;
+                }
+
+                return true;
+            } catch (error) {
+                addResult(`❌ ${backendName}: Test error: ${error.message}`, false);
+                return false;
+            }
+        }
+
+        window.runAllTests = async function() {
+            results.innerHTML = '';
+            consoleDiv.textContent = '';
+            
+            addInfo('🚀 Starting comprehensive storage manager tests...');
+            
+            if (await initializeStorageManager()) {
+                await testBasicOperations('Current Backend');
+                
+                // Test export/import
+                try {
+                    await storageManager.save('export_test', { data: 'export test' });
+                    const exportData = await storageManager.exportAllData();
+                    addResult('✅ Export operation successful');
+                    
+                    await storageManager.clearAll();
+                    const importResult = await storageManager.importAllData(exportData);
+                    if (importResult) {
+                        addResult('✅ Import operation successful');
+                    } else {
+                        addResult('❌ Import operation failed', false);
+                    }
+                } catch (error) {
+                    addResult(`❌ Export/Import test failed: ${error.message}`, false);
+                }
+            }
+            
+            addInfo('🏁 All tests completed!');
+        };
+
+        window.testIndexedDB = async function() {
+            results.innerHTML = '';
+            storageManager = new CalculatorStorageManager();
+            storageManager.primaryBackend = 'indexedDB';
+            await storageManager.initialize();
+            await testBasicOperations('IndexedDB');
+        };
+
+        window.testLocalStorage = async function() {
+            results.innerHTML = '';
+            storageManager = new CalculatorStorageManager();
+            storageManager.primaryBackend = 'localStorage';
+            await storageManager.initialize();
+            await testBasicOperations('LocalStorage');
+        };
+
+        window.testMemoryStorage = async function() {
+            results.innerHTML = '';
+            storageManager = new CalculatorStorageManager();
+            storageManager.primaryBackend = 'memory';
+            await storageManager.initialize();
+            await testBasicOperations('Memory');
+        };
+
+        window.clearConsole = function() {
+            consoleDiv.textContent = '';
+        };
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            addInfo('📋 Storage Manager Test Suite loaded. Click "Run All Tests" to begin.');
+        });
+    </script>
+</body>
+</html>

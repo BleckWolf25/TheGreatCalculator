@@ -1,0 +1,355 @@
+{
+  "timestamp": "2025-06-07T13:57:30.270Z",
+  "summary": {
+    "totalSize": 623120,
+    "fileCount": 26,
+    "moduleCount": 21,
+    "opportunityCount": 0,
+    "recommendationCount": 0
+  },
+  "analysis": {
+    "totalSize": 623120,
+    "fileCount": 26,
+    "files": [
+      {
+        "path": "assets/css/main.css",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/assets/css/main.css",
+        "size": 2476,
+        "type": "stylesheet",
+        "dependencies": []
+      },
+      {
+        "path": "css/error-boundary.css",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/css/error-boundary.css",
+        "size": 9037,
+        "type": "stylesheet",
+        "dependencies": []
+      },
+      {
+        "path": "js/main.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/main.js",
+        "size": 54492,
+        "type": "javascript",
+        "dependencies": [
+          "./moduleLoader.js",
+          "./modules/error/errorBoundary.js",
+          "./modules/error/fallbackComponents.js",
+          "./modules/error/fallbackCalculator.js"
+        ]
+      },
+      {
+        "path": "js/moduleLoader.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/moduleLoader.js",
+        "size": 55496,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/accessibility/accessibilityManager.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/accessibility/accessibilityManager.js",
+        "size": 29546,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/api/calculatorAPI.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/api/calculatorAPI.js",
+        "size": 32162,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/calculator.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/calculator.js",
+        "size": 18529,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/core/calculationCoordinator.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/core/calculationCoordinator.js",
+        "size": 34175,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/core/eventSystem.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/core/eventSystem.js",
+        "size": 17674,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/core/initialization.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/core/initialization.js",
+        "size": 16937,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/core/operations.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/core/operations.js",
+        "size": 28721,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/core/state.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/core/state.js",
+        "size": 18490,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/core/statePersistence.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/core/statePersistence.js",
+        "size": 19817,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/error/errorBoundary.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/error/errorBoundary.js",
+        "size": 38955,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/error/fallbackCalculator.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/error/fallbackCalculator.js",
+        "size": 12328,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/error/fallbackComponents.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/error/fallbackComponents.js",
+        "size": 13611,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/export/exportManager.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/export/exportManager.js",
+        "size": 23786,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/performance/bundleAnalyzer.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/performance/bundleAnalyzer.js",
+        "size": 13458,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/performance/lazyLoader.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/performance/lazyLoader.js",
+        "size": 28225,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/performance/performanceMonitor.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/performance/performanceMonitor.js",
+        "size": 22590,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/performance/treeShaking.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/performance/treeShaking.js",
+        "size": 12491,
+        "type": "javascript",
+        "dependencies": [
+          "module",
+          "module",
+          "./utils/module.js",
+          "./core/module.js",
+          "./module.js"
+        ]
+      },
+      {
+        "path": "js/modules/pwa/pwaUtils.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/pwa/pwaUtils.js",
+        "size": 19413,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/storage/fallbackStorage.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/storage/fallbackStorage.js",
+        "size": 15926,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/storage/storageManager.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/storage/storageManager.js",
+        "size": 26983,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "js/modules/ui/display.js",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/js/modules/ui/display.js",
+        "size": 26412,
+        "type": "javascript",
+        "dependencies": []
+      },
+      {
+        "path": "styles/original-theme.css",
+        "fullPath": "/Users/bleckwolf25/Downloads/Work/Programming/Web/TheGreatCalculator/src/styles/original-theme.css",
+        "size": 31390,
+        "type": "stylesheet",
+        "dependencies": []
+      }
+    ],
+    "modules": [
+      {
+        "name": "accessibilityManager",
+        "path": "accessibility/accessibilityManager.js",
+        "size": 29546,
+        "category": "other"
+      },
+      {
+        "name": "calculatorAPI",
+        "path": "api/calculatorAPI.js",
+        "size": 32162,
+        "category": "api"
+      },
+      {
+        "name": "calculator",
+        "path": "calculator.js",
+        "size": 18529,
+        "category": "other"
+      },
+      {
+        "name": "calculationCoordinator",
+        "path": "core/calculationCoordinator.js",
+        "size": 34175,
+        "category": "core"
+      },
+      {
+        "name": "eventSystem",
+        "path": "core/eventSystem.js",
+        "size": 17674,
+        "category": "core"
+      },
+      {
+        "name": "initialization",
+        "path": "core/initialization.js",
+        "size": 16937,
+        "category": "core"
+      },
+      {
+        "name": "operations",
+        "path": "core/operations.js",
+        "size": 28721,
+        "category": "core"
+      },
+      {
+        "name": "state",
+        "path": "core/state.js",
+        "size": 18490,
+        "category": "core"
+      },
+      {
+        "name": "statePersistence",
+        "path": "core/statePersistence.js",
+        "size": 19817,
+        "category": "core"
+      },
+      {
+        "name": "errorBoundary",
+        "path": "error/errorBoundary.js",
+        "size": 38955,
+        "category": "error"
+      },
+      {
+        "name": "fallbackCalculator",
+        "path": "error/fallbackCalculator.js",
+        "size": 12328,
+        "category": "error"
+      },
+      {
+        "name": "fallbackComponents",
+        "path": "error/fallbackComponents.js",
+        "size": 13611,
+        "category": "error"
+      },
+      {
+        "name": "exportManager",
+        "path": "export/exportManager.js",
+        "size": 23786,
+        "category": "export"
+      },
+      {
+        "name": "bundleAnalyzer",
+        "path": "performance/bundleAnalyzer.js",
+        "size": 13458,
+        "category": "performance"
+      },
+      {
+        "name": "lazyLoader",
+        "path": "performance/lazyLoader.js",
+        "size": 28225,
+        "category": "performance"
+      },
+      {
+        "name": "performanceMonitor",
+        "path": "performance/performanceMonitor.js",
+        "size": 22590,
+        "category": "performance"
+      },
+      {
+        "name": "treeShaking",
+        "path": "performance/treeShaking.js",
+        "size": 12491,
+        "category": "performance"
+      },
+      {
+        "name": "pwaUtils",
+        "path": "pwa/pwaUtils.js",
+        "size": 19413,
+        "category": "pwa"
+      },
+      {
+        "name": "fallbackStorage",
+        "path": "storage/fallbackStorage.js",
+        "size": 15926,
+        "category": "storage"
+      },
+      {
+        "name": "storageManager",
+        "path": "storage/storageManager.js",
+        "size": 26983,
+        "category": "storage"
+      },
+      {
+        "name": "display",
+        "path": "ui/display.js",
+        "size": 26412,
+        "category": "ui"
+      }
+    ],
+    "dependencies": {},
+    "duplicates": [],
+    "largeFiles": [],
+    "unusedFiles": []
+  },
+  "opportunities": {
+    "bundleSize": [],
+    "codesplitting": [],
+    "treeshaking": [],
+    "compression": [],
+    "lazyLoading": [],
+    "caching": []
+  },
+  "recommendations": [],
+  "metrics": {
+    "bundleSizeScore": 100,
+    "modularityScore": 71.86704799107143,
+    "optimizationScore": 100
+  }
+}

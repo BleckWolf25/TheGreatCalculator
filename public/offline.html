@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .offline-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px 32px;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offline-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: rotate 8s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .offline-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        h1 {
+            margin: 0 0 16px 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .features-list {
+            text-align: left;
+            margin: 32px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .features-list h3 {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: #4ade80;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn:hover, .btn:focus {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: rgba(0, 123, 255, 0.8);
+            border-color: rgba(0, 123, 255, 0.9);
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background: rgba(0, 123, 255, 0.9);
+            border-color: rgba(0, 123, 255, 1);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 12px 20px;
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.4);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffc107;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .footer-text {
+            margin-top: 32px;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 32px 24px;
+                margin: 16px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .offline-icon {
+                font-size: 4rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .offline-icon,
+            .status-dot,
+            .offline-container::before {
+                animation: none;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+        }
+
+        /* High contrast support */
+        @media (prefers-contrast: high) {
+            .offline-container {
+                background: rgba(0, 0, 0, 0.9);
+                border: 2px solid white;
+            }
+
+            .btn {
+                border-width: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon" role="img" aria-label="Offline indicator">📱</div>
+        
+        <h1>You're Offline</h1>
+        
+        <p class="subtitle">
+            Don't worry! The Great Calculator works perfectly offline with full functionality.
+        </p>
+
+        <div class="features-list">
+            <h3>Available Offline Features</h3>
+            <ul>
+                <li>Complete calculator functionality</li>
+                <li>Scientific and advanced operations</li>
+                <li>Calculation history (locally stored)</li>
+                <li>Custom formulas and functions</li>
+                <li>All accessibility features</li>
+                <li>Settings and preferences</li>
+            </ul>
+        </div>
+
+        <div class="status-indicator">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Data will sync when you reconnect</span>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">
+                <span>🧮</span>
+                <span>Open Calculator</span>
+            </a>
+            <button class="btn" onclick="window.location.reload()" aria-label="Check connection and retry">
+                <span>🔄</span>
+                <span>Try Again</span>
+            </button>
+        </div>
+
+        <p class="footer-text">
+            Your calculations and settings are safely stored locally and will be synchronized automatically when you reconnect to the internet.
+        </p>
+    </div>
+
+    <script>
+        // Check for connection restoration
+        window.addEventListener('online', () => {
+            // Show connection restored message
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #28a745;"></span>
+                    <span>Connection restored! Redirecting...</span>
+                `;
+                statusIndicator.style.background = 'rgba(40, 167, 69, 0.2)';
+                statusIndicator.style.borderColor = 'rgba(40, 167, 69, 0.4)';
+            }
+
+            // Redirect to main app after a short delay
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
+        });
+
+        // Update connection status
+        function updateConnectionStatus() {
+            const isOnline = navigator.onLine;
+            const statusIndicator = document.querySelector('.status-indicator');
+            
+            if (isOnline) {
+                statusIndicator.innerHTML = `
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #28a745;"></span>
+                    <span>Connected - Click to continue</span>
+                `;
+                statusIndicator.style.background = 'rgba(40, 167, 69, 0.2)';
+                statusIndicator.style.borderColor = 'rgba(40, 167, 69, 0.4)';
+                statusIndicator.style.cursor = 'pointer';
+                statusIndicator.onclick = () => window.location.href = '/';
+            }
+        }
+
+        // Check connection status on load
+        updateConnectionStatus();
+
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.classList.contains('btn')) {
+                e.target.click();
+            }
+        });
+
+        // Announce to screen readers
+        if ('speechSynthesis' in window) {
+            setTimeout(() => {
+                const announcement = new SpeechSynthesisUtterance(
+                    'You are currently offline. The calculator is fully functional offline. Your data will sync when you reconnect.'
+                );
+                announcement.volume = 0.1;
+                announcement.rate = 0.8;
+                speechSynthesis.speak(announcement);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

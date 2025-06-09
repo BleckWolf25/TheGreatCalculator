@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StorageManager Test</title>
+</head>
+<body>
+    <h1>StorageManager Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function log(message) {
+            console.log(message);
+            results.innerHTML += `<p>${message}</p>`;
+        }
+        
+        // Test native StorageManager
+        log('Testing native StorageManager...');
+        log('Native StorageManager exists: ' + ('StorageManager' in window));
+        log('Native StorageManager type: ' + typeof window.StorageManager);
+        
+        if (window.StorageManager) {
+            try {
+                const nativeTest = new window.StorageManager();
+                log('✅ Native StorageManager instantiation successful');
+            } catch (error) {
+                log('❌ Native StorageManager instantiation failed: ' + error.message);
+            }
+        }
+        
+        // Load our StorageManager
+        log('Loading CalculatorStorageManager...');
+        
+        const script = document.createElement('script');
+        script.src = '/src/js/modules/storage/storageManager.js';
+        script.onload = () => {
+            log('StorageManager script loaded');
+            
+            // Test our StorageManager
+            log('CalculatorStorageManager exists: ' + ('CalculatorStorageManager' in window));
+            log('CalculatorStorageManager type: ' + typeof window.CalculatorStorageManager);
+            
+            if (window.CalculatorStorageManager) {
+                try {
+                    const customTest = new window.CalculatorStorageManager();
+                    log('✅ CalculatorStorageManager instantiation successful');
+                } catch (error) {
+                    log('❌ CalculatorStorageManager instantiation failed: ' + error.message);
+                }
+            }
+            
+            // Check what StorageManager points to now
+            log('window.StorageManager === window.CalculatorStorageManager: ' + (window.StorageManager === window.CalculatorStorageManager));
+            log('window.StorageManager type after loading: ' + typeof window.StorageManager);
+            
+            if (window.StorageManager) {
+                try {
+                    const finalTest = new window.StorageManager();
+                    log('✅ Final StorageManager instantiation successful');
+                } catch (error) {
+                    log('❌ Final StorageManager instantiation failed: ' + error.message);
+                }
+            }
+        };
+        
+        script.onerror = () => {
+            log('❌ Failed to load StorageManager script');
+        };
+        
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

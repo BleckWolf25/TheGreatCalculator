@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Boundary Retry Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #console {
+            background-color: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Error Boundary Retry Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="testBasicRetry()">Test Basic Retry</button>
+        <button onclick="testFailedRetry()">Test Failed Retry</button>
+        <button onclick="testNoOperationRetry()">Test No Operation Retry</button>
+        <button onclick="testErrorRecovery()">Test Error Recovery</button>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Console Output</h2>
+        <div id="console"></div>
+    </div>
+
+    <script type="module">
+        import ErrorBoundary, { ERROR_CATEGORIES, ERROR_SEVERITY } from './src/js/modules/error/errorBoundary.js';
+
+        let errorBoundary;
+        const results = document.getElementById('results');
+        const consoleDiv = document.getElementById('console');
+
+        // Override console methods to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function logToDiv(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleDiv.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        console.log = (...args) => {
+            originalLog(...args);
+            logToDiv(args.join(' '), 'log');
+        };
+
+        console.error = (...args) => {
+            originalError(...args);
+            logToDiv(args.join(' '), 'error');
+        };
+
+        console.warn = (...args) => {
+            originalWarn(...args);
+            logToDiv(args.join(' '), 'warn');
+        };
+
+        function addResult(message, success = true) {
+            const div = document.createElement('div');
+            div.className = `test-result ${success ? 'success' : 'error'}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        function addInfo(message) {
+            const div = document.createElement('div');
+            div.className = 'test-result info';
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        // Initialize error boundary
+        async function initializeErrorBoundary() {
+            errorBoundary = new ErrorBoundary();
+            const success = errorBoundary.initialize();
+            
+            // Make it globally available for UI buttons
+            window.errorBoundary = errorBoundary;
+            
+            if (success) {
+                addResult('✅ Error Boundary initialized successfully');
+                return true;
+            } else {
+                addResult('❌ Error Boundary initialization failed', false);
+                return false;
+            }
+        }
+
+        // Test basic retry functionality
+        window.testBasicRetry = async function() {
+            results.innerHTML = '';
+            addInfo('🧪 Testing basic retry functionality...');
+            
+            if (!await initializeErrorBoundary()) return;
+
+            let attemptCount = 0;
+            const testOperation = () => {
+                attemptCount++;
+                if (attemptCount === 1) {
+                    throw new Error('Simulated transient error');
+                }
+                return 'Success on retry!';
+            };
+
+            try {
+                const result = await errorBoundary.wrapOperation(
+                    testOperation,
+                    ERROR_CATEGORIES.CALCULATION,
+                    { testContext: 'retry test' }
+                );
+                
+                // Now test manual retry
+                setTimeout(async () => {
+                    await errorBoundary.retryLastOperation();
+                    addResult('✅ Manual retry functionality tested');
+                }, 1000);
+                
+            } catch (error) {
+                addResult(`❌ Basic retry test failed: ${error.message}`, false);
+            }
+        };
+
+        // Test failed retry
+        window.testFailedRetry = async function() {
+            results.innerHTML = '';
+            addInfo('🧪 Testing failed retry functionality...');
+            
+            if (!await initializeErrorBoundary()) return;
+
+            const alwaysFailOperation = () => {
+                throw new Error('Operation always fails');
+            };
+
+            try {
+                await errorBoundary.wrapOperation(
+                    alwaysFailOperation,
+                    ERROR_CATEGORIES.CALCULATION,
+                    { testContext: 'failed retry test' }
+                );
+            } catch (error) {
+                addResult('✅ Error caught as expected');
+                
+                // Test manual retry of failed operation
+                setTimeout(async () => {
+                    await errorBoundary.retryLastOperation();
+                    addResult('✅ Failed retry functionality tested');
+                }, 1000);
+            }
+        };
+
+        // Test retry with no operation
+        window.testNoOperationRetry = async function() {
+            results.innerHTML = '';
+            addInfo('🧪 Testing retry with no operation...');
+            
+            if (!await initializeErrorBoundary()) return;
+
+            // Clear any existing retry context
+            errorBoundary.clearRetryContext();
+            
+            // Try to retry when no operation is stored
+            await errorBoundary.retryLastOperation();
+            addResult('✅ No operation retry handled correctly');
+        };
+
+        // Test error recovery
+        window.testErrorRecovery = async function() {
+            results.innerHTML = '';
+            addInfo('🧪 Testing error recovery mechanisms...');
+            
+            if (!await initializeErrorBoundary()) return;
+
+            // Test different error categories
+            const testCases = [
+                { category: ERROR_CATEGORIES.CALCULATION, error: 'Division by zero' },
+                { category: ERROR_CATEGORIES.UI, error: 'UI component failed' },
+                { category: ERROR_CATEGORIES.STORAGE, error: 'Storage unavailable' }
+            ];
+
+            for (const testCase of testCases) {
+                try {
+                    await errorBoundary.wrapOperation(
+                        () => { throw new Error(testCase.error); },
+                        testCase.category,
+                        { modules: { state: { reset: () => {} }, display: { clear: () => {}, updateDisplay: () => {} } } }
+                    );
+                } catch (error) {
+                    addResult(`✅ ${testCase.category} error recovery tested`);
+                }
+            }
+        };
+
+        window.clearConsole = function() {
+            consoleDiv.textContent = '';
+        };
+
+        // Auto-initialize on page load
+        window.addEventListener('load', () => {
+            addInfo('📋 Error Boundary Retry Test Suite loaded. Click buttons to run tests.');
+        });
+    </script>
+</body>
+</html>

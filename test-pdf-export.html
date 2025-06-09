@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Export Test - The Great Calculator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007AFF;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e5e5e7;
+            border-radius: 8px;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .sample-data {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Export Test</h1>
+        <p>This page tests the PDF export functionality of The Great Calculator's export manager.</p>
+        
+        <div class="test-section">
+            <h3>Sample Calculation History</h3>
+            <div class="sample-data" id="sampleData">
+                <div>2 + 3 = 5</div>
+                <div>10 * 5 = 50</div>
+                <div>sqrt(16) = 4</div>
+                <div>100 / 4 = 25</div>
+                <div>sin(π/2) = 1</div>
+                <div>log(100) = 2</div>
+                <div>2^8 = 256</div>
+                <div>15! = 1307674368000</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>PDF Export Tests</h3>
+            <button onclick="testBasicPDFExport()">Test Basic PDF Export</button>
+            <button onclick="testPDFWithMetadata()">Test PDF with Metadata</button>
+            <button onclick="testCustomPDFOptions()">Test Custom PDF Options</button>
+            <button onclick="testLargePDFExport()">Test Large PDF Export</button>
+            
+            <div id="status"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Instructions</h3>
+            <ol>
+                <li>Click any of the test buttons above</li>
+                <li>The PDF should be automatically generated and downloaded</li>
+                <li>Open the downloaded PDF to verify the content</li>
+                <li>Check that the formatting, headers, and footers are correct</li>
+            </ol>
+        </div>
+    </div>
+
+    <script type="module">
+        import ExportManager from './src/js/modules/export/exportManager.js';
+
+        // Initialize export manager
+        const exportManager = new ExportManager();
+        
+        // Sample calculation history
+        const sampleHistory = [
+            '2 + 3 = 5',
+            '10 * 5 = 50',
+            'sqrt(16) = 4',
+            '100 / 4 = 25',
+            'sin(π/2) = 1',
+            'log(100) = 2',
+            '2^8 = 256',
+            '15! = 1307674368000'
+        ];
+
+        // Large sample for testing pagination
+        const largeHistory = [];
+        for (let i = 1; i <= 100; i++) {
+            largeHistory.push(`${i} * 2 = ${i * 2}`);
+        }
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        window.testBasicPDFExport = async function() {
+            try {
+                showStatus('Generating basic PDF export...', 'info');
+                await exportManager.exportHistory(sampleHistory, 'pdf');
+                showStatus('✅ Basic PDF export completed successfully!', 'success');
+            } catch (error) {
+                showStatus(`❌ PDF export failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testPDFWithMetadata = async function() {
+            try {
+                showStatus('Generating PDF with metadata...', 'info');
+                await exportManager.exportHistory(sampleHistory, 'pdf', {
+                    includeMetadata: true,
+                    includeTimestamp: true
+                });
+                showStatus('✅ PDF with metadata export completed successfully!', 'success');
+            } catch (error) {
+                showStatus(`❌ PDF export failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testCustomPDFOptions = async function() {
+            try {
+                showStatus('Generating PDF with custom options...', 'info');
+                await exportManager.exportHistory(sampleHistory, 'pdf', {
+                    pdfPageSize: 'Letter',
+                    pdfOrientation: 'landscape',
+                    includeMetadata: true
+                });
+                showStatus('✅ Custom PDF export completed successfully!', 'success');
+            } catch (error) {
+                showStatus(`❌ PDF export failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testLargePDFExport = async function() {
+            try {
+                showStatus('Generating large PDF (100 calculations)...', 'info');
+                await exportManager.exportHistory(largeHistory, 'pdf', {
+                    includeMetadata: true
+                });
+                showStatus('✅ Large PDF export completed successfully!', 'success');
+            } catch (error) {
+                showStatus(`❌ PDF export failed: ${error.message}`, 'error');
+            }
+        };
+
+        // Show initial status
+        showStatus('PDF Export Test Ready. Click a button to test PDF generation.', 'info');
+    </script>
+</body>
+</html>

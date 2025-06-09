@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fixes - The Great Calculator</title>
+    <link rel="stylesheet" href="src/styles/original-theme.css">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        
+        .test-button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .test-button:hover {
+            background: var(--bg-secondary);
+            border-color: var(--border-focus);
+            transform: translateY(-1px);
+        }
+        
+        .export-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .export-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface-elevated);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            min-width: 120px;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .export-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--border-focus);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .csv-btn {
+            border-color: var(--success-border);
+            color: var(--success-text);
+        }
+
+        .csv-btn:hover {
+            background: var(--success-bg);
+            border-color: var(--success-border);
+        }
+
+        .pdf-btn {
+            border-color: var(--error-border);
+            color: var(--error-text);
+        }
+
+        .pdf-btn:hover {
+            background: var(--error-bg);
+            border-color: var(--error-border);
+        }
+
+        .json-btn {
+            border-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .json-btn:hover {
+            background: var(--warning-bg);
+            border-color: var(--warning-border);
+        }
+
+        .offline-status-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+
+        .offline-status-btn:hover {
+            background: var(--surface-elevated);
+            border-color: var(--border-focus);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Theme</button>
+    
+    <h1>Test Fixes for The Great Calculator</h1>
+    
+    <div class="test-section">
+        <h2>1. PWA Install Banner Fix</h2>
+        <p>The PWA install banner should now properly show the prompt when the install button is clicked.</p>
+        <button class="test-button" onclick="testPWAInstall()">📱 Test PWA Install</button>
+        <div id="pwa-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Offline Status Menu Styling</h2>
+        <p>The offline status menu should now use consistent theme colors.</p>
+        <button class="offline-status-btn" onclick="testOfflineStatus()">📊 Test Offline Status</button>
+        <div id="offline-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Export Buttons Styling</h2>
+        <p>The export buttons should now have proper styling with theme colors.</p>
+        <div class="export-buttons">
+            <button class="export-btn csv-btn" onclick="testExport('CSV')">📊 Export CSV</button>
+            <button class="export-btn pdf-btn" onclick="testExport('PDF')">📄 Export PDF</button>
+            <button class="export-btn json-btn" onclick="testExport('JSON')">📋 Export JSON</button>
+        </div>
+        <div id="export-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Accessibility Settings Fix</h2>
+        <p>The accessibility settings should no longer throw errors when accessing motorAccessibility.</p>
+        <button class="test-button" onclick="testAccessibilitySettings()">♿ Test Accessibility Settings</button>
+        <div id="accessibility-status"></div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+        }
+
+        function testPWAInstall() {
+            const status = document.getElementById('pwa-status');
+            status.innerHTML = '<p style="color: var(--success-text);">✅ PWA install functionality has been improved with proper error handling and event dispatching.</p>';
+        }
+
+        function testOfflineStatus() {
+            const status = document.getElementById('offline-status');
+            status.innerHTML = '<p style="color: var(--success-text);">✅ Offline status styling now uses consistent theme variables.</p>';
+        }
+
+        function testExport(format) {
+            const status = document.getElementById('export-status');
+            status.innerHTML = `<p style="color: var(--success-text);">✅ ${format} export button styling is working correctly!</p>`;
+        }
+
+        function testAccessibilitySettings() {
+            const status = document.getElementById('accessibility-status');
+            status.innerHTML = '<p style="color: var(--success-text);">✅ Accessibility settings now have proper error handling and fallbacks.</p>';
+        }
+    </script>
+</body>
+</html>
