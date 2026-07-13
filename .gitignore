@@ -35,17 +35,14 @@ pnpm-debug.log*
 # TypeScript
 *.tsbuildinfo
 
-# IDE and Editors
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.swp
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+.vercel
 
-# Security Keys
-*.pem
-*.key
+# Playwright
+playwright-report/
+test-results/
