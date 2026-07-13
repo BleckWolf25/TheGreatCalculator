@@ -45,7 +45,7 @@
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.1",
@@ -59,16 +59,16 @@
     "@types/react-dom": "^19.0.0",
     "@vitest/ui": "^3.0.0",
     "eslint": "^9.18.0",
-    "eslint-config-next": "^15.0.0",
+    "eslint-config-next": "^16.2.10",
     "fast-check": "^3.22.0",
     "happy-dom": "^20.10.6",
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
     "lighthouse": "^13.4.0",
     "lint-staged": "^17.0.8",
-    "postcss": "^8.5.18",
+    "postcss": "^8.5.19",
     "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.10",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "serve": "^14.2.6",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
@@ -76,7 +76,7 @@
   },
   "pnpm": {
     "overrides": {
-      "postcss": "^8.5.18"
+      "postcss": "^8.5.19"
     }
   },
   "packageManager": "pnpm@9.15.0"

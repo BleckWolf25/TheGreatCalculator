@@ -15,18 +15,9 @@
  * @updated 13/07/2026
  */
 // ---------- IMPORTS
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
 import type { Linter } from 'eslint';
-
-// ---------- CONSTANTS
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+import nextCoreWebVitalsConfig from 'eslint-config-next/core-web-vitals';
+import nextTypescriptConfig from 'eslint-config-next/typescript';
 
 // ---------- CONFIGURATION
 const eslintConfig: Linter.Config[] = [
@@ -49,7 +40,8 @@ const eslintConfig: Linter.Config[] = [
       '*.config.ts',
     ],
   },
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...nextCoreWebVitalsConfig,
+  ...nextTypescriptConfig,
   {
     rules: {
       // TypeScript strict rules
@@ -82,6 +74,7 @@ const eslintConfig: Linter.Config[] = [
       'react/no-unescaped-entities': 'error',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/set-state-in-effect': 'warn',
 
       // Next.js Flat Config adjustments
       '@next/next/no-page-custom-font': 'off',
