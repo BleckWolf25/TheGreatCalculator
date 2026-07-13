@@ -41,7 +41,7 @@
     "jstat": "^1.9.6",
     "katex": "^0.17.0",
     "lucide-react": "^0.468.0",
-    "mathjs": "^13.2.3",
+    "mathjs": "^15.2.0",
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -66,13 +66,18 @@
     "jiti": "^2.7.0",
     "lighthouse": "^13.4.0",
     "lint-staged": "^17.0.8",
-    "postcss": "^8.4.0",
+    "postcss": "^8.5.18",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
     "serve": "^14.2.6",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "^8.5.18"
+    }
   },
   "packageManager": "pnpm@9.15.0"
 }

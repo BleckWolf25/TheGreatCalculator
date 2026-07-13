@@ -104,9 +104,9 @@ export function evaluateExpression(expr: string, options: EvalOptions = {}): Eva
     // ---------- EXACT CAS CHECK (Return simplified fraction representation if exactCAS enabled)
     if (options.exactCAS && typeof evaluated === 'number' && Number.isFinite(evaluated)) {
       try {
-        const frac = math.fraction(evaluated) as { n: number; d: number; s: number };
-        if (frac && frac.d > 1 && frac.d <= 10000) {
-          const signStr = frac.s < 0 ? '-' : '';
+        const frac = math.fraction(evaluated) as unknown as { n: bigint; d: bigint; s: bigint };
+        if (frac && frac.d > 1n && frac.d <= 10000n) {
+          const signStr = frac.s < 0n ? '-' : '';
           return { result: `${signStr}${frac.n}/${frac.d}`, error: null };
         }
       } catch {
