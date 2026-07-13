@@ -1,0 +1,29 @@
+# @file .gitattributes
+# @version 1.0.0
+# @author BleckWolf25
+# @license MIT
+# @summary Git attributes configuration to standardize line endings and binary files.
+
+# Set default behavior to automatically normalize line endings.
+* text=auto eol=lf
+
+# Source code files force LF line endings.
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+
+# Mark binary files to prevent normalization.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
