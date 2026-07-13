@@ -34,7 +34,9 @@ export function useTheme() {
 
       // ---------- GUARD (Ensure loaded value is a valid theme option)
       if (saved === 'light' || saved === 'dark' || saved === 'system') {
-        setThemeState(saved);
+        Promise.resolve().then(() => {
+          setThemeState(saved);
+        });
       }
     } catch {
       // Ignore local storage read errors gracefully

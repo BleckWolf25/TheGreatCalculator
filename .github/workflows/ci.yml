@@ -1,3 +1,6 @@
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -26,11 +29,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check Formatting
-        run: pnpm run format:check
+      - name: Format fix all files
+        run: pnpm format --check
 
       - name: Run Linter
-        run: pnpm run lint
+        run: pnpm run lint --fix
 
       - name: Run Tests
         run: pnpm run test run

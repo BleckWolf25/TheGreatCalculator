@@ -36,12 +36,15 @@ export function TopNavBar({ mode, onModeChange, theme, onThemeToggle }: TopNavBa
 
   // ---------- EFFECT (Resolve theme system value)
   useEffect(() => {
-    if (theme === 'system') {
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
-      setResolvedTheme(mq.matches ? 'dark' : 'light');
-    } else {
-      setResolvedTheme(theme);
-    }
+    const target =
+      theme === 'system'
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+        : theme;
+    Promise.resolve().then(() => {
+      setResolvedTheme(target);
+    });
   }, [theme]);
 
   // ---------- HANDLER: SHARE
