@@ -14,15 +14,26 @@
  * @since 13/07/2026
  * @updated 13/07/2026
  */
-
+// ---------- CONSTANTS
 const CACHE_NAME = 'great-calculator-v1';
-const STATIC_ASSETS = ['/', '/manifest.json', '/icon.svg'];
+const STATIC_ASSETS = [
+  '/',
+  '/manifest.json',
+  '/TheGreatCalculator.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
+  '/icon-maskable-192.png',
+  '/icon-maskable-512.png',
+];
 
+// ---------- INSTALL
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS)));
   self.skipWaiting();
 });
 
+// ---------- ACTIVATION
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -38,6 +49,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// ---------- MAIN
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 

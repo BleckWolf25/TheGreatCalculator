@@ -41,6 +41,14 @@ export const metadata: Metadata = {
   keywords: ['calculator', 'scientific', 'graphing', 'probability', 'math'],
   authors: [{ name: 'João Costa' }],
   manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/TheGreatCalculator.png', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
 };
 
 export const viewport: Viewport = {
