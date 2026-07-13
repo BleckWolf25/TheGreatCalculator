@@ -19,6 +19,7 @@ import type { NextConfig } from 'next';
 
 // ---------- CONFIGURATION
 const nextConfig: NextConfig = {
+  output: process.env.VERCEL ? undefined : 'export',
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
