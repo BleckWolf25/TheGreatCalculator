@@ -74,7 +74,6 @@ const eslintConfig: Linter.Config[] = [
       'react/no-unescaped-entities': 'error',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'react-hooks/set-state-in-effect': 'warn',
 
       // Next.js Flat Config adjustments
       '@next/next/no-page-custom-font': 'off',

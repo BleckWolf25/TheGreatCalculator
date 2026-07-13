@@ -56,14 +56,14 @@ export function GraphicCalculator({
 
   // ---------- EFFECT (Check desktop viewport width size)
   React.useEffect(() => {
-    setIsDesktop(window.innerWidth >= 768);
-
-    const handleResize = () => {
+    const checkDesktop = () => {
       setIsDesktop(window.innerWidth >= 768);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    Promise.resolve().then(checkDesktop);
+
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
   // ---------- HANDLER: KEYPAD INSERT

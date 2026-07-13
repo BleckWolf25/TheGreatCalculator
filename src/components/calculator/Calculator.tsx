@@ -17,7 +17,7 @@
 'use client';
 
 // ---------- IMPORTS
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { CalculatorMode, CalculatorSettings, ThemeMode } from '@/lib/types';
 import { useHistory } from '@/hooks/useHistory';
 import { useTheme } from '@/hooks/useTheme';
@@ -41,9 +41,9 @@ export function Calculator() {
     precision: 10,
   });
 
-  useEffect(() => {
-    setSettingsState((prev) => (prev.theme === theme ? prev : { ...prev, theme }));
-  }, [theme]);
+  if (settings.theme !== theme) {
+    setSettingsState((prev) => ({ ...prev, theme }));
+  }
 
   const handleSettingsChange = (partial: Partial<CalculatorSettings>) => {
     setSettingsState((prev) => {
