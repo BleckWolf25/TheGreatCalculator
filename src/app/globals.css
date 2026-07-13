@@ -1,0 +1,175 @@
+/**
+ * @file globals.css
+ *
+ * @version 1.0.0
+ * @author BleckWolf25
+ * @license MIT
+ *
+ * @summary Global stylesheet for setting up Tailwind and custom design variables.
+ *
+ * @description
+ * Configures the import paths for material symbols, Tailwind core stylesheet,
+ * theme configuration variable states, utility color variables, and custom scrollbar
+ * styling overrides.
+ *
+ * @since 10/07/2026
+ * @updated 13/07/2026
+ */
+
+/* ---------- IMPORTS */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
+@import 'tailwindcss';
+
+/* ---------- THEME */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- DESIGN SYSTEM */
+:root {
+  /* ---------- LIGHT MODE COLORS (Surface, primary, secondary, error, and semantic tokens) */
+  --surface: #f9f9fb;
+  --surface-dim: #d9dadc;
+  --surface-bright: #f9f9fb;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f3f5;
+  --surface-container: #eeeef0;
+  --surface-container-high: #e8e8ea;
+  --surface-container-highest: #e2e2e4;
+  --on-surface: #1a1c1d;
+  --on-surface-variant: #434656;
+  --inverse-surface: #2f3132;
+  --inverse-on-surface: #f0f0f2;
+  --outline: #737688;
+  --outline-variant: #c3c5d9;
+  --surface-tint: #004ee7;
+  --primary: #0043c8;
+  --on-primary: #ffffff;
+  --primary-container: #0057ff;
+  --on-primary-container: #ffffff;
+  --inverse-primary: #b6c4ff;
+  --secondary: #5f5e5e;
+  --on-secondary: #ffffff;
+  --secondary-container: #e5e2e1;
+  --on-secondary-container: #1a1c1d;
+  --tertiary: #972800;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #c13600;
+  --on-tertiary-container: #ffffff;
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #410002;
+  --background: #f9f9fb;
+  --on-background: #1a1c1d;
+
+  /* ---------- GRID CANVAS (Light) */
+  --grid-line: #f0f0f0;
+  --grid-axis: #c3c5d9;
+
+  /* ---------- SPACING (4px baseline grid) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* ---------- RADIUS */
+  --radius-sm: 0.125rem;
+  --radius: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* ---------- STANDARD UI VARIABLES */
+  --card: #ffffff;
+  --card-foreground: #1a1c1d;
+  --popover: #ffffff;
+  --popover-foreground: #1a1c1d;
+  --muted: #f3f3f5;
+  --muted-foreground: #5f5e5e;
+  --accent: #eeeef0;
+  --accent-foreground: #1a1c1d;
+  --destructive: #ba1a1a;
+  --destructive-foreground: #ffffff;
+  --border: #c3c5d9;
+  --input: #c3c5d9;
+  --ring: #0043c8;
+}
+
+.dark {
+  /* ---------- DARK MODE COLORS (Surface, primary, secondary, error, and semantic tokens) */
+  --surface: #10141a;
+  --surface-dim: #10141a;
+  --surface-bright: #353940;
+  --surface-container-lowest: #0a0e14;
+  --surface-container-low: #181c22;
+  --surface-container: #1c2026;
+  --surface-container-high: #262a31;
+  --surface-container-highest: #31353c;
+  --on-surface: #dfe2eb;
+  --on-surface-variant: #c3c5d9;
+  --inverse-surface: #dfe2eb;
+  --inverse-on-surface: #2d3137;
+  --outline: #8d90a2;
+  --outline-variant: #434656;
+  --surface-tint: #b6c4ff;
+  --primary: #4a84ff;
+  --on-primary: #001e60;
+  --primary-container: #0043c8;
+  --on-primary-container: #ffffff;
+  --inverse-primary: #004ee7;
+  --secondary: #bfc7d3;
+  --on-secondary: #29313a;
+  --secondary-container: #424a54;
+  --on-secondary-container: #dfe2eb;
+  --tertiary: #ffb59f;
+  --on-tertiary: #5f1600;
+  --tertiary-container: #c13600;
+  --on-tertiary-container: #ffffff;
+  --error: #ef4444;
+  --on-error: #ffffff;
+  --error-container: #991b1b;
+  --on-error-container: #fee2e2;
+  --background: #10141a;
+  --on-background: #dfe2eb;
+
+  /* ---------- GRID CANVAS (Dark) */
+  --grid-line: #1e2228;
+  --grid-axis: #434656;
+
+  /* ---------- STANDARD UI VARIABLES (Dark) */
+  --card: #14181f;
+  --card-foreground: #dfe2eb;
+  --popover: #14181f;
+  --popover-foreground: #dfe2eb;
+  --muted: #1c2026;
+  --muted-foreground: #8d90a2;
+  --accent: #262a31;
+  --accent-foreground: #dfe2eb;
+  --destructive: #ffb4ab;
+  --destructive-foreground: #690005;
+  --border: #434656;
+  --input: #434656;
+  --ring: #4a84ff;
+}
+
+/* ---------- RESET & CORE STYLES */
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--on-background);
+  font-feature-settings:
+    'rlig' 1,
+    'calt' 1;
+}
+
+/* ---------- SCROLLBAR STYLING */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
