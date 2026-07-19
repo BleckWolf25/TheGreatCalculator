@@ -51,7 +51,7 @@
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
     "@playwright/test": "^1.61.1",
-    "@tailwindcss/postcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/react": "^16.3.2",
     "@types/katex": "^0.16.8",
     "@types/node": "^22.5.0",
