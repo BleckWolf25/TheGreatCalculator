@@ -12,13 +12,12 @@
  * dynamically handles DEG/RAD toggle text, and binds keypress clicks.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import { SCIENTIFIC_KEYPAD } from '@/lib/constants';
 import { KeypadButton } from './KeypadButton';
 import type { AngleMode } from '@/lib/types';

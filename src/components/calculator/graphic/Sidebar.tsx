@@ -12,12 +12,11 @@
  * renders active sub-components, and embeds keypad docks inside desktop layouts.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import type { SidebarTab } from '@/lib/types';
 import { cn } from '@/lib/utils';
 

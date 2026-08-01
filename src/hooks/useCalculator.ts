@@ -12,7 +12,7 @@
  * angle modes. State is read/saved from IndexedDB and history entries are updated accordingly.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
@@ -116,6 +116,7 @@ export function useCalculator({ onHistoryAdd, exactCAS }: UseCalculatorProps = {
         'abs(',
         'nPr(',
         'nCr(',
+        '*10^',
       ];
 
       // ---------- TOKEN REMOVAL (Cleanly pop full mathematical function names)

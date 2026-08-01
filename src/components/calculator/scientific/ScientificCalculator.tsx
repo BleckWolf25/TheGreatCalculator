@@ -12,13 +12,12 @@
  * drive operations, display inputs/results, and render keypad action buttons.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import { useCalculator } from '@/hooks/useCalculator';
 import { useKeyboard } from '@/hooks/useKeyboard';
 import { Display } from './Display';

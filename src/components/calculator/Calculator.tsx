@@ -12,12 +12,12 @@
  * (history, settings), synchronizes user config parameters, and mounts sub-panels.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { CalculatorMode, CalculatorSettings, ThemeMode } from '@/lib/types';
 import { useHistory } from '@/hooks/useHistory';
 import { useTheme } from '@/hooks/useTheme';

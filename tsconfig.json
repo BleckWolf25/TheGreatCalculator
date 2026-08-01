@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "incremental": true,
     "plugins": [
@@ -19,7 +19,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-
     // Strict Type-Checking Options
     "strict": true,
     "noImplicitAny": true,
@@ -36,11 +35,16 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-
     // Advanced Checks
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules", "out"]
 }

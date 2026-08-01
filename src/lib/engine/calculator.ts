@@ -12,7 +12,7 @@
  * converts DEG/RAD angle modes for trigonometric expressions, and formats float results.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import * as math from 'mathjs';
@@ -44,6 +44,7 @@ export function preprocessExpression(expr: string, options: EvalOptions = {}): s
     .replace(/÷/g, '/')
     .replace(/−/g, '-')
     .replace(/π/g, 'pi')
+    .replace(/\bln\b/g, 'log')
     .replace(/\bANS\b/gi, options.previousResult || '0')
     .replace(/\bans\b/gi, options.previousResult || '0');
 

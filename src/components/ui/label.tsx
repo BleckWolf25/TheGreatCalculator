@@ -11,25 +11,30 @@
  * Accessible form label component matching project design typography and state indicators.
  *
  * @since 13/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
+// ---------- IMPORTS
 import * as React from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+// ---------- VARIANTS
 const labelVariants = cva(
   'text-xs font-semibold uppercase tracking-wider text-(--on-surface-variant) peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
 );
 
+// ---------- COMPONENT: Label
 const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (
   <LabelPrimitive.Root ref={ref} className={cn(labelVariants(), className)} {...props} />
 ));
+
+// ---------- EXPORTS
 Label.displayName = LabelPrimitive.Root.displayName;
 
 export { Label };

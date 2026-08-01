@@ -12,12 +12,12 @@
  * handles screen resize indicators, and routes sub-panels dynamically inside desktop and mobile templates.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { SidebarTab, HistoryEntry, CalculatorSettings } from '@/lib/types';
 import { useGraph } from '@/hooks/useGraph';
 import { useProbability } from '@/hooks/useProbability';
@@ -55,7 +55,7 @@ export function GraphicCalculator({
   const [isDesktop, setIsDesktop] = useState(false);
 
   // ---------- EFFECT (Check desktop viewport width size)
-  React.useEffect(() => {
+  useEffect(() => {
     const checkDesktop = () => {
       setIsDesktop(window.innerWidth >= 768);
     };

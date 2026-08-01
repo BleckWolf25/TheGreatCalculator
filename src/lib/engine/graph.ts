@@ -12,7 +12,7 @@
  * evaluates continuous function series arrays with discontinuity filters, and calculates tick intervals.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import * as math from 'mathjs';
@@ -56,7 +56,10 @@ export function evaluateFunctionSeries(
   let compiled: math.EvalFunction;
 
   try {
-    const cleanExpr = exprText.replace(/^y\s*=\s*/i, '').trim();
+    const cleanExpr = exprText
+      .replace(/^y\s*=\s*/i, '')
+      .replace(/\bln\b/g, 'log')
+      .trim();
     compiled = math.compile(cleanExpr);
   } catch {
     return [];

@@ -12,12 +12,11 @@
  * memory, action, and special buttons with transition animations and shifts.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 

@@ -11,16 +11,18 @@
  * Provides accessible range slider controls with styled track, range bar, and draggable thumb.
  *
  * @since 13/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
+// ---------- IMPORTS
 import * as React from 'react';
 import * as SliderPrimitive from '@radix-ui/react-slider';
 import { cn } from '@/lib/utils';
 
+// ---------- COMPONENT
 const Slider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
+  React.ComponentRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
 >(({ className, ...props }, ref) => (
   <SliderPrimitive.Root

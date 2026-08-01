@@ -12,7 +12,7 @@
  * in production environments, disables powered-by headers, and bypasses image optimization.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import type { NextConfig } from 'next';
@@ -32,11 +32,6 @@ const nextConfig: NextConfig = {
   // Typescript
   typescript: {
     ignoreBuildErrors: false,
-  },
-
-  // ESLint
-  eslint: {
-    ignoreDuringBuilds: false,
   },
 
   // Images
