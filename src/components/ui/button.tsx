@@ -11,8 +11,9 @@
  * Provides accessible button elements and Slot forwarding with customizable size and color variants.
  *
  * @since 13/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
+// ---------- IMPORTS
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';

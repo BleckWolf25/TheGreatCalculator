@@ -13,12 +13,12 @@
  * displaying key graph points like zeros and extrema, and tracking cursor position with a crosshair tool.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React, { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import type { GraphViewport, Expression, GraphPoint, AnalysisResult } from '@/lib/types';
 import {
   worldToScreen,

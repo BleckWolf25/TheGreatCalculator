@@ -12,11 +12,11 @@
  * parsing when valid, and renders them visually using KaTeX with fallback to plain text.
  *
  * @since 13/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 
 // ---------- IMPORTS
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import katex from 'katex';
 import { parse } from 'mathjs';
 

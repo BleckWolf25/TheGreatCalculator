@@ -12,12 +12,11 @@
  * and handles adding new formulas up to a maximum defined scale.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import type { Expression } from '@/lib/types';
 import { ExpressionCard } from './ExpressionCard';
 

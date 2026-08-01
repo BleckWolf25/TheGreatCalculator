@@ -13,7 +13,7 @@
  * divide-by-zero behaviors, invalid syntax handling, and custom previous answer (ans) tracking.
  *
  * @since 13/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import { describe, it, expect } from 'vitest';
@@ -87,6 +87,18 @@ describe('Scientific Calculator Engine', () => {
 
     const resE = evaluateExpression('e', { angleMode: 'RAD' });
     expect(Number(resE.result)).toBeCloseTo(2.71828182846, 6);
+  });
+
+  // ---------- TEST: LOGARITHMS & SCIENTIFIC NOTATION
+  it('evaluates natural log (ln), base-10 log (log10), and EXP (scientific notation)', () => {
+    const resLn = evaluateExpression('ln(e)');
+    expect(Number(resLn.result)).toBeCloseTo(1, 6);
+
+    const resLog10 = evaluateExpression('log10(100)');
+    expect(Number(resLog10.result)).toBeCloseTo(2, 6);
+
+    const resExp = evaluateExpression('5*10^3');
+    expect(resExp.result).toBe('5000');
   });
 
   // ---------- TEST: DIVIDE BY ZERO

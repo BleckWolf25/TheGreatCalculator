@@ -12,12 +12,12 @@
  * formatted using shadcn/ui primitives.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import type { Expression } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';

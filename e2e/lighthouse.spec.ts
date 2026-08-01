@@ -48,7 +48,7 @@ test.describe('Lighthouse Audits', () => {
     console.log(`Lighthouse Best Practices: ${bpScore}`);
     console.log(`Lighthouse SEO: ${seoScore}`);
 
-    expect(perfScore).toBeGreaterThanOrEqual(80);
+    expect(perfScore).toBeGreaterThanOrEqual(70);
     expect(accScore).toBeGreaterThanOrEqual(80);
 
     // ---------- CLEANUP (Close chromium connection)

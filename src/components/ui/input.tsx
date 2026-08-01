@@ -12,15 +12,16 @@
  * explicitly hiding native browser spinner controls on numeric fields.
  *
  * @since 13/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
+// ---------- IMPORTS
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 // ---------- TYPES
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-// ---------- COMPONENT: INPUT
+// ---------- COMPONENT: Input
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
@@ -36,6 +37,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
+
+// ---------- EXPORTS
 Input.displayName = 'Input';
 
 export { Input };

@@ -17,7 +17,7 @@
 'use client';
 
 // ---------- IMPORTS
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import type { CalculatorMode } from '@/lib/types';
 
 // ---------- TYPES
@@ -30,7 +30,7 @@ interface CalculatorContextValue {
 const CalculatorContext = createContext<CalculatorContextValue | undefined>(undefined);
 
 // ---------- PROVIDERS
-export function CalculatorProvider({ children }: { children: React.ReactNode }) {
+export function CalculatorProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<CalculatorMode>('scientific');
 
   return (

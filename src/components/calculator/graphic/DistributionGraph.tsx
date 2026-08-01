@@ -11,12 +11,12 @@
  * Generates plot points and renders probability density/mass functions (PDF/PMF) or cumulative distribution functions (CDF) dynamically based on the current distribution parameters, query inputs, and dark mode styling.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React, { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import type { DistributionType, DistributionParams, ProbabilityQuery } from '@/lib/types';
 import { generateDistributionPlotPoints } from '@/lib/engine/probability';
 

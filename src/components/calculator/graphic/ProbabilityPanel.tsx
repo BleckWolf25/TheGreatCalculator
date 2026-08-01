@@ -13,12 +13,11 @@
  * using clean shadcn/ui primitives.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import type {
   DistributionType,
   DistributionParams,

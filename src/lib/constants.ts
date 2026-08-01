@@ -12,7 +12,7 @@
  * distribution parameters, keyboard mappings, and layouts for scientific and graphing keypads.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import type { GraphViewport, KeypadButtonConfig, DistributionParams } from './types';
@@ -180,7 +180,7 @@ export const SCIENTIFIC_KEYPAD: KeypadButtonConfig[][] = [
     { label: '(', value: '(', variant: 'operator', ariaLabel: '( (Open parenthesis)' },
     { label: ')', value: ')', variant: 'operator', ariaLabel: ') (Close parenthesis)' },
     { label: '%', value: '%', variant: 'operator', ariaLabel: '% (Percent)' },
-    { label: 'EXP', value: 'e', variant: 'function', ariaLabel: 'EXP (Scientific notation)' },
+    { label: 'EXP', value: '*10^', variant: 'function', ariaLabel: 'EXP (Scientific notation)' },
   ],
   [
     { label: '7', value: '7', variant: 'number' },

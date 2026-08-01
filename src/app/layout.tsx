@@ -12,7 +12,7 @@
  * the top-level HTML document containing the font configuration and main theme body style.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import type { Metadata, Viewport } from 'next';
@@ -35,7 +35,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 // ---------- METADATA
 export const metadata: Metadata = {
-  title: 'TheGreatCalculator — Scientific & Graphing Calculator',
+  title: 'TheGreatCalculator',
   description:
     'A super advanced, performant, responsive, accessible scientific and graphing calculator with probability distributions.',
   keywords: ['calculator', 'scientific', 'graphing', 'probability', 'math'],

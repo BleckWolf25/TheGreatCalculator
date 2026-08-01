@@ -12,7 +12,7 @@
  * local gradient checks) to identify function roots and local minima/maxima within a viewport.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 // ---------- IMPORTS
 import * as math from 'mathjs';
@@ -21,7 +21,10 @@ import type { GraphViewport, AnalysisResult } from '../types';
 // ---------- HELPER METHODS
 function compileExpr(exprText: string): math.EvalFunction | null {
   try {
-    const clean = exprText.replace(/^y\s*=\s*/i, '').trim();
+    const clean = exprText
+      .replace(/^y\s*=\s*/i, '')
+      .replace(/\bln\b/g, 'log')
+      .trim();
     return math.compile(clean);
   } catch {
     return null;

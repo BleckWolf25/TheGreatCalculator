@@ -12,12 +12,11 @@
  * with operator formatting, and displays the main evaluation result or syntax error.
  *
  * @since 10/07/2026
- * @updated 13/07/2026
+ * @updated 01/08/2026
  */
 'use client';
 
 // ---------- IMPORTS
-import React from 'react';
 import type { AngleMode } from '@/lib/types';
 import { formatExpressionDisplay } from '@/lib/engine/formatter';
 import { MathView } from './MathView';
